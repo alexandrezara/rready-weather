@@ -4,12 +4,13 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 
 const distFolder = "dist";
-const inputName = "Main";
-const outputName = "weather-sdk.js";
+const inputName = "InstallVue3";
+const outputName = "weather-sdk";
 
 export default [
   {
     input: `src/${inputName}.ts`,
+    external: ["axios", "vue"],
     output: {
       file: `${distFolder}/${outputName}.js`,
       format: "esm",
