@@ -4,7 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 
 const distFolder = "dist";
-const inputName = "InstallVue3";
+const inputName = "Main";
 const outputName = "weather-sdk";
 
 export default [
