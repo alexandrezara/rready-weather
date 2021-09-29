@@ -1,4 +1,6 @@
+import { AxiosResponse } from "axios";
 import { SDKClient } from "./SDKClient";
+import { ICityWeather } from "./SDKInterfaces";
 import { SDKOptions } from "./SDKOptions";
 
 export class SDK {
@@ -10,8 +12,8 @@ export class SDK {
     this.client = new SDKClient(options);
   }
 
-  weather(city: string) {
-    return this.client.send({
+  weather(city: string): Promise<ICityWeather> {
+    return this.client.send<ICityWeather>({
       method: "get",
       url: "weather",
       params: {
