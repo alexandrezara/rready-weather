@@ -5,6 +5,8 @@
 </template>
 
 <style lang="sass">
+@import '~sanitize.css'
+
 #app
   font-family: Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing: antialiased
