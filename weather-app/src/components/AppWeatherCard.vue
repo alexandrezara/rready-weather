@@ -2,13 +2,14 @@
   <div class="app-weather-card">
     <h2>{{ city }}</h2>
     <div class="main-info">
-      <span>{{ temperature }}</span> - <span>{{ condition }}</span>
+      <span>{{ 9 }}</span> - <span>{{ 5 }}</span>
     </div>
     <div class="additional-info"></div>
   </div>
 </template>
 
 <script lang="ts">
+import { ICityWeather } from "@rready/weather-sdk";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -19,11 +20,25 @@ export default defineComponent({
       required: true,
     },
   },
+  created() {
+    this.reloadData();
+  },
   data: function() {
     return {
-      temperature: "50",
-      condition: "Clear",
+      weather: {} as ICityWeather,
     };
+  },
+  methods: {
+    reloadData() {
+      this.$api
+        .weather(this.city)
+        .then((data) => {
+          this.weather = data;
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    },
   },
 });
 </script>

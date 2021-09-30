@@ -5,8 +5,8 @@ import router from "./router";
 import store from "./store";
 
 const sdkOptions: SDKOptions = {
-  baseUrl: "",
-  apiKey: "",
+  baseUrl: process.env.VUE_APP_SDK_URL,
+  apiKey: process.env.VUE_APP_SDK_KEY,
   timeout: 10000,
   handlers: {
     genericError(error: string) {
