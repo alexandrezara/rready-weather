@@ -2,7 +2,8 @@
   <div class="app-weather-card">
     <h2>{{ city }}</h2>
     <div class="main-info">
-      <span>{{ 9 }}</span> - <span>{{ 5 }}</span>
+      <app-tempetature :kelvin="weather?.main?.temp" :unit="unit" /> -
+      <span>Clear</span>
     </div>
     <div class="additional-info"></div>
   </div>
@@ -11,9 +12,14 @@
 <script lang="ts">
 import { ICityWeather } from "@rready/weather-sdk";
 import { defineComponent } from "vue";
+import AppTempetature from "./AppTempetature.vue";
+import { TemperatureUnit } from "@/helpers/Temperature";
 
 export default defineComponent({
   name: "AppWeatherCard",
+  components: {
+    AppTempetature,
+  },
   props: {
     city: {
       type: String,
@@ -26,6 +32,7 @@ export default defineComponent({
   data: function() {
     return {
       weather: {} as ICityWeather,
+      unit: TemperatureUnit.Kelvin,
     };
   },
   methods: {
