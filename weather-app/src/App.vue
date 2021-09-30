@@ -1,7 +1,6 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link>
-  </div>
+  <h1>Weather</h1>
+
   <router-view />
 </template>
 
@@ -11,14 +10,4 @@
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-align: center
-
-#nav
-  padding: 30px
-
-  a
-    font-weight: bold
-    color: #2c3e50
-
-    &.router-link-exact-active
-      color: #42b983
 </style>
