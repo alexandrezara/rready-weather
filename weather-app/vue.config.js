@@ -1,3 +1,12 @@
 module.exports = {
-  transpileDependencies: true
-}
+  transpileDependencies: true,
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `
+          @import "@/styles/main.sass"
+        `,
+      },
+    },
+  },
+};
