@@ -1,0 +1,36 @@
+{
+  "name": "@rready/weather-sdk",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/weather-sdk.js",
+  "types": "dist/weather-sdk.d.ts",
+  "files": [
+    "src/*",
+    "dist/weather-sdk.js",
+    "dist/weather-sdk.d.ts"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "serve": "vue-cli-service serve dev/serve.js",
+    "build": "rollup -c rollup.config.js",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/jest": "^27.0.2",
+    "axios": "^0.21.4",
+    "jest": "^27.2.4",
+    "rollup": "^2.57.0",
+    "rollup-plugin-dts": "^4.0.0",
+    "ts-jest": "^27.0.5",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.3",
+    "vue": "^3.2.19"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.19",
+    "axios": "^0.21.4"
+  }
+}
