@@ -18,17 +18,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    temperature: {
-      type: Number,
-      required: true,
-    },
-    condition: {
-      type: String,
-      required: true,
-    },
   },
   data: function() {
-    return {};
+    return {
+      temperature: "50",
+      condition: "Clear",
+    };
   },
 });
 </script>

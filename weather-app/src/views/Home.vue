@@ -1,12 +1,8 @@
 <template>
   <div class="home">
     <ul class="city-list">
-      <li v-for="city in cities">
-        <app-weather-card
-          city="Cidade Aqui"
-          :temperature="30"
-          condition="Clear"
-        />
+      <li v-for="city in cityList">
+        <app-weather-card :city="city" />
       </li>
     </ul>
   </div>
@@ -20,9 +16,12 @@ export default defineComponent({
   name: "Home",
   components: { AppWeatherCard },
   data: function() {
-    return {
-      cities: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    };
+    return {};
+  },
+  computed: {
+    cityList() {
+      return this.$store.state.cities;
+    },
   },
 });
 </script>
