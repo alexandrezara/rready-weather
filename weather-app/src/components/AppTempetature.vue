@@ -15,7 +15,7 @@ export default defineComponent({
       default: 0,
     },
     unit: {
-      type: Object as PropType<TemperatureUnit>,
+      type: Number as PropType<TemperatureUnit>,
       required: true,
     },
   },

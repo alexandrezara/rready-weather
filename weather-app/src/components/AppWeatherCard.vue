@@ -1,9 +1,12 @@
 <template>
-  <div class="app-weather-card">
+  <div v-if="loading" class="app-weather-card">
+    <h2>LOADING</h2>
+  </div>
+  <div v-else class="app-weather-card">
     <h2>{{ city }}</h2>
     <div class="main-info">
-      <app-tempetature :kelvin="weather?.main?.temp" :unit="unit" /> -
-      <span>Clear</span>
+      <app-tempetature :kelvin="weather.main.temp" :unit="unit" /> -
+      <span>{{ weather.weather[0].main }}</span>
     </div>
     <div class="additional-info"></div>
   </div>
@@ -33,17 +36,21 @@ export default defineComponent({
     return {
       weather: {} as ICityWeather,
       unit: TemperatureUnit.Kelvin,
+      loading: true,
     };
   },
   methods: {
     reloadData() {
+      this.loading = true;
       this.$api
         .weather(this.city)
         .then((data) => {
           this.weather = data;
+          this.loading = false;
         })
         .catch((error) => {
           alert(error);
+          this.loading = false;
         });
     },
   },
