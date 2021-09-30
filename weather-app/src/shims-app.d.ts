@@ -1,14 +1,23 @@
 import { ComponentCustomProperties } from "vue";
+import { SDK } from "@rready/weather-sdk";
 import { Store } from "vuex";
 
+// STORE
+
 declare module "@vue/runtime-core" {
-  // declare your own store states
   interface State {
     cities: string[];
   }
 
-  // provide typings for `this.$store`
   interface ComponentCustomProperties {
     $store: Store<State>;
+  }
+}
+
+// SDK
+
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    $api: SDK;
   }
 }
