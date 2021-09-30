@@ -1,8 +1,25 @@
 <template>
-  <h1>Weather</h1>
+  <div class="main-layout">
+    <h1>Weather</h1>
+    <app-search />
 
-  <router-view />
+    <div class="main-content">
+      <router-view />
+    </div>
+  </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import AppSearch from "@/components/AppSearch.vue";
+
+export default defineComponent({
+  name: "App",
+  components: {
+    AppSearch,
+  },
+});
+</script>
 
 <style lang="sass">
 @import '~sanitize.css'
@@ -12,4 +29,12 @@
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-align: center
+
+  .main-layout
+    display: flex
+    flex-direction: column
+    min-height: 100vh
+
+  .main-content
+    flex-grow: 1
 </style>
