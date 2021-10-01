@@ -30,7 +30,7 @@ export default defineComponent({
     },
   },
   created() {
-    //this.reloadData();
+    this.reloadData();
   },
   data: function() {
     return {
