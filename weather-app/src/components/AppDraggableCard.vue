@@ -1,7 +1,7 @@
 <template>
   <div
     class="app-draggable-card"
-    :class="{ over: over }"
+    :class="{ over: over, active: active }"
     @dragEnter="dragEnter"
     @dragover="dragOver"
     @dragleave="dragLeave"
@@ -10,7 +10,7 @@
     <div
       class="drag-content"
       :class="{ dragging: dragging }"
-      draggable="true"
+      :draggable="active"
       @dragstart="dragStart"
       @dragend="dragEnd"
     >
@@ -26,6 +26,7 @@ export default defineComponent({
   name: "AppDraggableCard",
   emits: ["drag-and-drop"],
   props: {
+    active: Boolean,
     id: String,
   },
   data: function() {
@@ -72,7 +73,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="sass">
-.app-draggable-card
+.app-draggable-card.active
   border: 1px solid #f0f0f0
   width: 250px
   height: 350px
@@ -89,6 +90,6 @@ export default defineComponent({
     &.dragging
       background-color: #e0ffe0
 
-.hide
-  display: none
+  .hide
+    display: none
 </style>
