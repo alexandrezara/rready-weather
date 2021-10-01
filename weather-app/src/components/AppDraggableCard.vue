@@ -27,7 +27,7 @@ export default defineComponent({
   emits: ["drag-and-drop"],
   props: {
     active: Boolean,
-    id: String,
+    index: Number,
   },
   data: function() {
     return {
@@ -38,7 +38,7 @@ export default defineComponent({
   methods: {
     dragStart(event: DragEvent) {
       this.dragging = true;
-      event?.dataTransfer?.setData("text/plain", `${this.id}`);
+      event?.dataTransfer?.setData("text/plain", `${this.index}`);
       setTimeout(() => {
         (<Element>event.target).classList.add("hide");
       }, 0);
@@ -65,7 +65,7 @@ export default defineComponent({
       const data = event.dataTransfer.getData("text/plain");
       this.$emit("drag-and-drop", {
         from: data,
-        to: this.id,
+        to: this.index,
       });
     },
   },

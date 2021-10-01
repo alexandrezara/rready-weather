@@ -4,7 +4,7 @@
     <ul class="city-list">
       <li v-for="city in cityList">
         <app-draggable-card
-          :id="city"
+          :index="city.position"
           :active="editing"
           @drag-and-drop="moveCards"
         >
@@ -23,6 +23,9 @@ import AppDraggableCard from "@/components/AppDraggableCard.vue";
 export default defineComponent({
   name: "Home",
   components: { AppWeatherCard, AppDraggableCard },
+  created() {
+    this.reloadData();
+  },
   data: function() {
     return {
       editing: false,
@@ -30,7 +33,9 @@ export default defineComponent({
   },
   computed: {
     cityList() {
-      return this.$store.state.cities;
+      return this.$store.state.cities.sort((a, b) => {
+        return a.position - b.position;
+      });
     },
   },
   methods: {
@@ -39,6 +44,21 @@ export default defineComponent({
     },
     toggleEdit() {
       this.editing = !this.editing;
+    },
+    reloadData() {
+      this.cityList.forEach((item) => {
+        this.$api
+          .weather(item.city)
+          .then((data) => {
+            this.$store.commit("updateWeather", {
+              city: item.city,
+              weather: data,
+            });
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      });
     },
   },
 });
