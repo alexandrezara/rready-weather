@@ -35,7 +35,7 @@ export default defineComponent({
   data: function() {
     return {
       weather: {} as ICityWeather,
-      unit: TemperatureUnit.Kelvin,
+      unit: TemperatureUnit.Celsius,
       loading: true,
     };
   },
