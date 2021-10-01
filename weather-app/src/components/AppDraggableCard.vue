@@ -14,7 +14,7 @@
       @dragstart="dragStart"
       @dragend="dragEnd"
     >
-      <h1>{{ id }}</h1>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -24,6 +24,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "AppDraggableCard",
+  emits: ["drag-and-drop"],
   props: {
     id: String,
   },
@@ -61,7 +62,10 @@ export default defineComponent({
       this.over = false;
       this.dragging = false;
       const data = event.dataTransfer.getData("text/plain");
-      console.log(`Drag: '${data}'' - Drop into '${this.id}'`);
+      this.$emit("drag-and-drop", {
+        from: data,
+        to: this.id,
+      });
     },
   },
 });

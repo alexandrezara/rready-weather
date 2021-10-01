@@ -1,13 +1,10 @@
 <template>
   <div class="home">
-    <ul v-if="false" class="city-list">
-      <li v-for="city in cityList">
-        <app-weather-card :city="city" />
-      </li>
-    </ul>
     <ul class="city-list">
       <li v-for="city in cityList">
-        <app-draggable-card :id="city" />
+        <app-draggable-card :id="city" @drag-and-drop="moveCards">
+          <app-weather-card :city="city" />
+        </app-draggable-card>
       </li>
     </ul>
   </div>
@@ -27,6 +24,11 @@ export default defineComponent({
   computed: {
     cityList() {
       return this.$store.state.cities;
+    },
+  },
+  methods: {
+    moveCards(data: any) {
+      this.$store.commit("moveCity", data);
     },
   },
 });

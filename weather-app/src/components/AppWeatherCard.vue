@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" class="app-weather-card">
-    <h2>LOADING</h2>
+    <h2>{{ city }}</h2>
   </div>
   <div v-else class="app-weather-card">
     <h2>{{ city }}</h2>
