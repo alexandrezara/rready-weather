@@ -1,8 +1,13 @@
 <template>
   <div class="home">
-    <ul class="city-list">
+    <ul v-if="false" class="city-list">
       <li v-for="city in cityList">
         <app-weather-card :city="city" />
+      </li>
+    </ul>
+    <ul class="city-list">
+      <li v-for="city in cityList">
+        <app-draggable-card :id="city" />
       </li>
     </ul>
   </div>
@@ -11,10 +16,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppWeatherCard from "@/components/AppWeatherCard.vue";
+import AppDraggableCard from "@/components/AppDraggableCard.vue";
 
 export default defineComponent({
   name: "Home",
-  components: { AppWeatherCard },
+  components: { AppWeatherCard, AppDraggableCard },
   data: function() {
     return {};
   },
