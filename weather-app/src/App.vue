@@ -4,6 +4,11 @@
       <h1>rready weather</h1>
       <nav>
         <app-search @select-item="addWidget" />
+        <app-icon
+          src="icon-settings.svg"
+          :clicable="true"
+          @click="activateSettings"
+        />
       </nav>
     </header>
     <main>
@@ -15,16 +20,21 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppSearch from "@/components/AppSearch.vue";
+import AppIcon from "@/components/base/AppIcon.vue";
 import { IAutocompleteItem } from "./helpers/AutocompleteService";
 
 export default defineComponent({
   name: "App",
   components: {
     AppSearch,
+    AppIcon,
   },
   methods: {
     addWidget(item: IAutocompleteItem) {
       this.$store.commit("addWidget", item);
+    },
+    activateSettings() {
+      this.$store.commit("updateSettings");
     },
   },
 });
@@ -52,15 +62,17 @@ export default defineComponent({
 
       h1
         font-size: 3em
+        margin-top: 16px
         margin-bottom: 16px
         color: white
 
       nav
-        display: inline-block
-        max-width: 400px
+        display: flex
+        justify-content: center
 
     main
       flex-grow: 1
       max-width: 960px
-      //background-color: #ffffff
+      margin: 0 auto
+      padding: $space-large
 </style>

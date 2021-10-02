@@ -78,23 +78,23 @@ export default defineComponent({
   //background-color: red
 
 .drag-container
-  //background-color: lighten(grey, 45%)
-  border: 2px solid lighten(grey, 45%)
+  border: 2px solid transparent
+  border-radius: $size-border-radius
 
   &.active
-    border: 2px solid blue
+    border: 2px dashed $color-purple-light
 
   &.over
-    border: 2px solid red
+    border: 2px solid darken($color-purple-light, 10%)
 
 .drag-content
-  //background-color: lighten(blue, 46%)
+  border-radius: $size-border-radius
 
   &.active
     cursor: move
 
   &.dragging
-    background-color: green
+    background-color: white
 
   .hide
     display: none

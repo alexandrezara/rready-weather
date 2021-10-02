@@ -1,11 +1,10 @@
 <template>
   <div class="home">
-    <button @click="toggleEdit">Edit: {{ editing }}</button>
     <ul class="city-list">
       <li v-for="city in cityList">
         <app-draggable-card
           :index="city.position"
-          :active="editing"
+          :active="editingMode"
           @drag-and-drop="moveCards"
         >
           <app-weather-card :city="city" />
@@ -27,9 +26,7 @@ export default defineComponent({
     this.reloadData();
   },
   data: function() {
-    return {
-      editing: false,
-    };
+    return {};
   },
   computed: {
     cityList() {
@@ -37,13 +34,13 @@ export default defineComponent({
         return a.position - b.position;
       });
     },
+    editingMode() {
+      return this.$store.state.settings;
+    },
   },
   methods: {
     moveCards(data: any) {
       this.$store.commit("moveCity", data);
-    },
-    toggleEdit() {
-      this.editing = !this.editing;
     },
     reloadData() {
       this.cityList.forEach((item) => {

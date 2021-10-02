@@ -1,27 +1,31 @@
 <template>
-  <div v-if="!city" class="app-weather-card">
-    <h2>Loading</h2>
-  </div>
-  <div v-else class="app-weather-card">
-    <!-- app-config /-->
-    <span class="city">{{ city.city }}</span>
-    <span class="temperature">{{ temperature }}</span>
-    <span class="condition">{{ condition }}</span>
-    <div class="more"></div>
+  <div class="app-weather-card" :class="[state]">
+    <span class="title">{{ city!.city }}</span>
+    <span class="subtitle">{{ city!.subtitle }}</span>
+    <div v-if="state == 'info'" class="info">
+      <app-overlay :active="false" />
+      <div class="temperature">{{ temperature }}</div>
+      <div class="condition">{{ condition }}</div>
+    </div>
+    <div v-else-if="state == 'moving'" class="moving">
+      <app-icon src="icon-move.svg" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, WeatherConfig } from "vue";
 import AppTempetature from "./AppTempetature.vue";
-import AppConfig from "./AppConfig.vue";
+import AppOverlay from "./AppOverlay.vue";
 import { TemperatureUnit } from "@/helpers/Temperature";
+import AppIcon from "./base/AppIcon.vue";
 
 export default defineComponent({
   name: "AppWeatherCard",
   components: {
-    AppConfig,
     AppTempetature,
+    AppOverlay,
+    AppIcon,
   },
   props: {
     city: Object as PropType<WeatherConfig>,
@@ -32,6 +36,9 @@ export default defineComponent({
     };
   },
   computed: {
+    state() {
+      return this.$store.state.settings ? "moving" : "info";
+    },
     temperature() {
       return this.city?.weather?.main.temp;
     },
@@ -45,24 +52,45 @@ export default defineComponent({
 <style scoped lang="sass">
 .app-weather-card
   position: relative
-  border: 2px solid #c0d0f0 !important
+  border: 2px solid white !important
   display: flex
   flex-direction: column
-  justify-content: center
   align-items: center
   min-width: 200px
   min-height: 150px
-  padding: $space-small
-  @include drop-shadow
-  border-radius: 10px
+  padding: $size-border-radius
+  border-radius: $size-border-radius
+  overflow: hidden
 
-  .city
+  &.info
+    @include drop-shadow
+
+  .title
+    display: inline-block
+    font-size: $font-medium
+    line-height: 1
+
+  .subtitle
+    display: inline-block
     font-size: $font-small
     margin-bottom: $space-small
 
-  .temperature
-    font-size: $font-title
+  .info
+    position: relative
+    flex-grow: 1
+    text-align: center
 
-  .condition
-    font-size: $font-medium
+    .temperature
+      font-size: $font-huge
+
+    .condition
+      font-size: $font-medium
+
+  .moving
+    position: relative
+    display: flex
+    flex-grow: 1
+    align-items: center
+    justify-content: center
+    user-select: none
 </style>

@@ -6,11 +6,13 @@ import { Store } from "vuex";
 
 declare module "@vue/runtime-core" {
   interface State {
+    settings: boolean,
     cities: WeatherConfig[];
   }
 
   interface WeatherConfig {
     city: string;
+    subtitle: string;
     position: number;
     weather: ICityWeather?;
   }

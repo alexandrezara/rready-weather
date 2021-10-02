@@ -10,9 +10,7 @@
       v-model="searchString"
       placeholder="Type a city here"
     />
-    <div class="search-icon">
-      <img src="@/assets/icon-search.svg" />
-    </div>
+    <app-icon src="icon-search.svg" />
 
     <div class="search-results" v-if="showPredictions">
       <div v-for="item in autocomplete?.predictions">
@@ -30,6 +28,7 @@ import {
   AutocompleteService,
   IAutocomplete,
 } from "@/helpers/AutocompleteService";
+import AppIcon from "@/components/base/AppIcon.vue";
 import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
 const service = new AutocompleteService(
@@ -39,6 +38,9 @@ const service = new AutocompleteService(
 
 export default defineComponent({
   name: "AppSearch",
+  components: {
+    AppIcon,
+  },
   emits: ["select-item"],
   data: function() {
     return {
@@ -102,6 +104,7 @@ $half-size: math.div($size, 2)
   flex-direction: row
   align-items: center
   gap: $space-small
+  margin: 0 $space-small
 
   .search-input
     flex-grow: 1
@@ -154,7 +157,7 @@ $half-size: math.div($size, 2)
       cursor: pointer
 
       &:hover
-        background-color: lighten($color-purple, 40%)
+        background-color: $color-purple-light
 
       .text
         text-align: start
