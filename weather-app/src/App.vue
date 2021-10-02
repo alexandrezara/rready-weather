@@ -1,11 +1,14 @@
 <template>
   <div class="main-layout">
-    <h1>Weather</h1>
-    <app-search />
-
-    <div class="main-content">
+    <header>
+      <h1>rready weather</h1>
+      <nav>
+        <app-search />
+      </nav>
+    </header>
+    <main>
       <router-view />
-    </div>
+    </main>
   </div>
 </template>
 
@@ -28,12 +31,30 @@ export default defineComponent({
   font-family: Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
+  color: $color-text-black
 
   .main-layout
     display: flex
     flex-direction: column
+    align-items: stretch
     min-height: 100vh
 
-  .main-content
-    flex-grow: 1
+    header
+      text-align: center
+      background-color: $color-purple
+      padding-bottom: 36px
+
+      h1
+        font-size: 3em
+        margin-bottom: 16px
+        color: white
+
+      nav
+        display: inline-block
+        max-width: 400px
+
+    main
+      flex-grow: 1
+      max-width: 960px
+      //background-color: #ffffff
 </style>

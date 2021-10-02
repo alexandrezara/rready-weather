@@ -6,10 +6,16 @@
       v-model="searchString"
       @focusin="updateFocus(true)"
       @focusout="updateFocus(false)"
+      placeholder="Type a city here"
     />
+    <div class="search-icon">
+      <img src="@/assets/icon-search.svg" />
+    </div>
+
     <div class="search-results" v-if="showPredictions">
-      <div v-for="item in autocomplete.predictions">
-        <span>{{ item.description }}</span>
+      <div class="search-result-item" v-for="item in autocomplete?.predictions">
+        <span class="text">{{ item.description }}</span>
+        <img class="icon" src="@/assets/icon-add.svg" />
       </div>
     </div>
   </div>
@@ -33,12 +39,14 @@ export default defineComponent({
     return {
       searchString: "",
       focus: false as boolean,
-      autocomplete: {} as IAutocomplete,
+      autocomplete: {} as IAutocomplete | undefined,
     };
   },
   watch: {
     searchString(value: string, _: any) {
-      if (value.length > 2) {
+      if (value.length <= 2) {
+        this.autocomplete = undefined;
+      } else {
         service
           .autocomplete(value)
           .then(this.autocompleteUpdate)
@@ -48,7 +56,11 @@ export default defineComponent({
   },
   computed: {
     showPredictions(): boolean {
-      return this.focus && this.autocomplete?.predictions?.length > 0;
+      return (
+        this.focus &&
+        this.autocomplete != undefined &&
+        this.autocomplete.predictions?.length > 0
+      );
     },
   },
   methods: {
@@ -66,11 +78,74 @@ export default defineComponent({
 </script>
 
 <style scoped lang="sass">
-.search-input
-  width: 300px
-.search-results
-  position: absolute
-  width: 300px
-  height: 100px
-  background-color: red
+$size: 42px
+$half-size: math.div($size, 2)
+
+.app-search
+  position: relative
+  display: flex
+  flex-direction: row
+  align-items: center
+  gap: $space-small
+
+  .search-input
+    flex-grow: 1
+    height: $size
+    padding: 0 $half-size
+    border: 2px solid white
+    border-radius: $half-size
+    font-size: $font-large
+    outline: 0
+    color: darken(grey, 20%)
+    @include drop-shadow
+
+    &:hover
+      border: 2px solid darken(white, 5%)
+
+    &:focus
+      border: 2px solid lighten(blue, 40%)
+
+    &::placeholder
+      color: lighten(grey, 30%)
+      user-select: none
+
+  .search-icon
+    width: $size
+    height: $size
+    padding: 8px
+    border-radius: $half-size
+    background-color: white
+
+    img
+      width: 100%
+      height: 100%
+
+  .search-results
+    z-index: 10
+    position: absolute
+    top: $size + 6px
+    padding: $half-size 0
+    width: 100%
+    border-radius: $half-size
+    background-color: white
+    @include drop-shadow()
+
+    .search-result-item
+      display: flex
+      flex-direction: row
+      align-items: center
+      margin: 2px 0
+      padding: 4px 6px 4px $half-size
+      cursor: pointer
+
+      &:hover
+        background-color: lighten($color-purple, 40%)
+
+      .text
+        text-align: start
+        flex-grow: 1
+
+      .icon
+        width: $size - 12px
+        height: $size - 12px
 </style>

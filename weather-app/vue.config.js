@@ -4,7 +4,9 @@ module.exports = {
     loaderOptions: {
       sass: {
         additionalData: `
-          @import "@/styles/main.sass"
+        @use "sass:math"
+        @import "@/styles/main.sass"
+        @import "@/styles/mixin.sass"
         `,
       },
     },

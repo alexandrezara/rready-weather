@@ -1,6 +1,6 @@
 <template>
   <div
-    class="app-draggable-card"
+    class="app-draggable-card drag-container"
     :class="{ over: over, active: active }"
     @dragEnter="dragEnter"
     @dragover="dragOver"
@@ -9,7 +9,7 @@
   >
     <div
       class="drag-content"
-      :class="{ dragging: dragging }"
+      :class="{ dragging: dragging, active: active }"
       :draggable="active"
       @dragstart="dragStart"
       @dragend="dragEnd"
@@ -73,22 +73,28 @@ export default defineComponent({
 </script>
 
 <style scoped lang="sass">
-.app-draggable-card.active
-  border: 1px solid #f0f0f0
-  width: 250px
-  height: 350px
+.app-draggable-card
+  padding: 4px
+  //background-color: red
+
+.drag-container
+  //background-color: lighten(grey, 45%)
+  border: 2px solid lighten(grey, 45%)
+
+  &.active
+    border: 2px solid blue
 
   &.over
-    border: 1px solid red
+    border: 2px solid red
 
-  .drag-content
-    background-color: #fff0f0
-    width: 100%
-    height: 90%
+.drag-content
+  //background-color: lighten(blue, 46%)
+
+  &.active
     cursor: move
 
-    &.dragging
-      background-color: #e0ffe0
+  &.dragging
+    background-color: green
 
   .hide
     display: none
