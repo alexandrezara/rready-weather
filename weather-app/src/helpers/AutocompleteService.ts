@@ -28,11 +28,16 @@ export class AutocompleteService {
 }
 
 export interface IAutocomplete {
-  predictions: {
-    description: string;
-    place_id: string;
-    structured_formatting: {
-      main_text: string;
-    };
+  predictions: IAutocompleteItem[];
+}
+
+export interface IAutocompleteItem {
+  description: string;
+  place_id: string;
+  structured_formatting: {
+    main_text: string;
+  };
+  terms: {
+    value: string;
   }[];
 }

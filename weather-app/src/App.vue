@@ -3,7 +3,7 @@
     <header>
       <h1>rready weather</h1>
       <nav>
-        <app-search />
+        <app-search @select-item="addWidget" />
       </nav>
     </header>
     <main>
@@ -15,11 +15,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppSearch from "@/components/AppSearch.vue";
+import { IAutocompleteItem } from "./helpers/AutocompleteService";
 
 export default defineComponent({
   name: "App",
   components: {
     AppSearch,
+  },
+  methods: {
+    addWidget(item: IAutocompleteItem) {
+      this.$store.commit("addWidget", item);
+    },
   },
 });
 </script>

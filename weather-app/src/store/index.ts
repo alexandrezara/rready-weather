@@ -64,6 +64,13 @@ export default createStore<State>({
         city.weather = payload.weather;
       }
     },
+    addWidget(state: State, payload: any) {
+      state.cities.push({
+        city: payload.structured_formatting.main_text,
+        position: state.cities.length,
+        weather: null,
+      });
+    },
   },
   actions: {},
   modules: {},

@@ -1,11 +1,13 @@
 <template>
-  <div class="app-search">
+  <div
+    class="app-search"
+    @focusin="udpateFocus(true)"
+    @focusout="udpateFocus(false)"
+  >
     <input
       class="search-input"
       type="text"
       v-model="searchString"
-      @focusin="updateFocus(true)"
-      @focusout="updateFocus(false)"
       placeholder="Type a city here"
     />
     <div class="search-icon">
@@ -13,9 +15,11 @@
     </div>
 
     <div class="search-results" v-if="showPredictions">
-      <div class="search-result-item" v-for="item in autocomplete?.predictions">
-        <span class="text">{{ item.description }}</span>
-        <img class="icon" src="@/assets/icon-add.svg" />
+      <div v-for="item in autocomplete?.predictions">
+        <div class="search-result-item" @click="selectResult(item)">
+          <span class="text">{{ item.description }}</span>
+          <img class="icon" src="@/assets/icon-add.svg" />
+        </div>
       </div>
     </div>
   </div>
@@ -35,10 +39,12 @@ const service = new AutocompleteService(
 
 export default defineComponent({
   name: "AppSearch",
+  emits: ["select-item"],
   data: function() {
     return {
       searchString: "",
-      focus: false as boolean,
+      focusInput: false as boolean,
+      focusPredictions: false as boolean,
       autocomplete: {} as IAutocomplete | undefined,
     };
   },
@@ -57,21 +63,30 @@ export default defineComponent({
   computed: {
     showPredictions(): boolean {
       return (
-        this.focus &&
+        this.focusInput &&
         this.autocomplete != undefined &&
         this.autocomplete.predictions?.length > 0
       );
     },
   },
   methods: {
+    clear() {
+      this.searchString = "";
+    },
     autocompleteUpdate(success: AxiosResponse<IAutocomplete>) {
       this.autocomplete = success.data;
     },
     autocompleteFail(error: any) {
       console.log(error);
     },
-    updateFocus(status: boolean) {
-      this.focus = status;
+    udpateFocus(status: boolean) {
+      setTimeout(() => {
+        this.focusInput = status;
+      }, 100);
+    },
+    selectResult(item: any) {
+      this.$emit("select-item", item);
+      this.clear();
     },
   },
 });
