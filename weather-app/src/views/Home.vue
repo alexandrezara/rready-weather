@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AppWeatherCard from "@/components/AppWeatherCard.vue";
-import AppDraggableCard from "@/components/AppDraggableCard.vue";
+import AppDraggableCard from "@/components/base/AppDraggable.vue";
 import { ICityWeather } from "@rready/weather-sdk";
 import { IWeather } from "@/model/IWeather";
 import { IWidget } from "@/model/IWidget";
