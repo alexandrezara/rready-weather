@@ -8,16 +8,13 @@
     </div> -->
     <div v-if="state == 'info'" class="info" style="font-size: 12px;">
       <div v-if="configTemperature">
-        Max: {{ city?.weather?.main.temp_max }} / Min:
-        {{ city?.weather?.main.temp_min }}
+        Min: {{ temperatureMin }} <br />Max:
+        {{ temperatureMax }}
       </div>
       <div v-if="configSunriseSunset">
-        Sunrise: {{ city?.weather?.sys.sunrise }} / Sunset:
-        {{ city?.weather?.sys.sunset }}
+        Sunrise: {{ sunrise }} / Sunset: {{ sunset }}
       </div>
-      <div v-if="configWindSpeed">
-        Wind speed: {{ city?.weather?.wind.speed }}
-      </div>
+      <div v-if="configWindSpeed">Wind: {{ windSpeed }}</div>
     </div>
     <div v-else-if="state == 'config'" class="config">
       <app-checkbox v-model="configTemperature" text="Min/max temperature" />
@@ -36,6 +33,7 @@ import AppTempetature from "./AppTempetature.vue";
 import { TemperatureUnit } from "@/helpers/Temperature";
 import AppIcon from "./base/AppIcon.vue";
 import AppCheckbox from "./base/AppCheckbox.vue";
+import { Time, Temperature } from "@rready/weather-sdk";
 
 export default defineComponent({
   name: "AppWeatherCard",
@@ -60,10 +58,32 @@ export default defineComponent({
       return this.$store.state.settings ? "config" : "info";
     },
     temperature() {
-      return this.city?.weather?.main.temp;
+      return Temperature.build(
+        this.city?.weather?.main.temp,
+        TemperatureUnit.Celsius
+      )?.format();
     },
     condition() {
       return this.city?.weather?.weather[0].main;
+    },
+    temperatureMin() {
+      return Temperature.build(this.city?.weather?.main.temp_min, 1)?.format();
+    },
+    temperatureMax() {
+      return Temperature.build(this.city?.weather?.main.temp_max, 1)?.format();
+    },
+    sunrise() {
+      const times = this.city?.weather?.sys.sunrise!;
+      const offset = (this.city?.weather as any).timezone!;
+      return Time.build(times, offset)?.format();
+    },
+    sunset() {
+      const times = this.city?.weather?.sys.sunset!;
+      const offset = (this.city?.weather as any).timezone!;
+      return Time.build(times, offset)?.format();
+    },
+    windSpeed() {
+      return `${this.city?.weather?.wind.speed} m/s`;
     },
   },
 });
