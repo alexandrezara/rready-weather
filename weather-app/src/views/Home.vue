@@ -7,7 +7,7 @@
           :active="editingMode"
           @drag-and-drop="moveCards"
         >
-          <app-weather-card :city="city" />
+          <app-weather-card :widget="city" />
         </app-draggable-card>
       </li>
     </ul>

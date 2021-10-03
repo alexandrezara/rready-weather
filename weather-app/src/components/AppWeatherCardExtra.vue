@@ -1,6 +1,6 @@
 <template>
   <div class="app-weather-card-extra">
-    <div class="panel-line" v-if="config.minMaxtemperature">
+    <div class="panel-line" v-if="settings.showTemperature">
       <div>
         <span class="key">Min:</span>
         <span class="val">{{ temperatureMin }}</span>
@@ -10,7 +10,7 @@
         <span class="val">{{ temperatureMax }}</span>
       </div>
     </div>
-    <div class="panel-line" v-if="config.sunsetSunrise">
+    <div class="panel-line" v-if="settings.showSunrise">
       <div>
         <span class="key">Sunrise:</span>
         <span class="val">{{ sunrise }}</span>
@@ -20,7 +20,7 @@
         <span class="val">{{ sunset }}</span>
       </div>
     </div>
-    <div class="panel-line" v-if="config.windSpeed">
+    <div class="panel-line" v-if="settings.showWindSpeed">
       <div>
         <span class="key">Wind:</span>
         <span class="val">{{ windSpeed }}</span>
@@ -33,6 +33,7 @@
 import { defineComponent, PropType } from "vue";
 import { Time, Temperature, TemperatureUnit } from "@rready/weather-sdk";
 import { IWeather } from "@/model/IWeather";
+import { IWidgetSettings } from "@/model/IWidget";
 
 export default defineComponent({
   name: "AppWeatherCardMain",
@@ -42,16 +43,12 @@ export default defineComponent({
       type: Object as PropType<IWeather>,
       required: true,
     },
-    unit: {
-      type: Number as PropType<TemperatureUnit>,
+    settings: {
+      type: Object as PropType<IWidgetSettings>,
       required: true,
     },
-    config: {
-      type: Object as PropType<{
-        minMaxtemperature: boolean;
-        sunsetSunrise: boolean;
-        windSpeed: boolean;
-      }>,
+    unit: {
+      type: Number as PropType<TemperatureUnit>,
       required: true,
     },
   },

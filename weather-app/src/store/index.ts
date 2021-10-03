@@ -1,4 +1,5 @@
 import { IAutocompleteItem } from "@/helpers/AutocompleteService";
+import { IWidgetSettings } from "@/model/IWidget";
 import { State } from "vue";
 import { createStore } from "vuex";
 
@@ -11,78 +12,72 @@ export default createStore<State>({
         order: 1,
         cityName: "Rotterdam",
         cityLocation: "Países Baixos",
-        settings: undefined,
-        weather: undefined,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
         key: "Zurich",
         order: 0,
         cityName: "Zurich",
         cityLocation: "Suíça",
-        settings: undefined,
-        weather: undefined,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
         key: "Belgrade",
         order: 2,
         cityName: "Belgrade",
         cityLocation: "Sérvia",
-        settings: undefined,
-        weather: undefined,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
         key: "Skopje",
         order: 3,
         cityName: "Skopje",
         cityLocation: "Macedônia",
-        settings: undefined,
-        weather: undefined,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
         key: "Uberlandia",
         order: 4,
         cityName: "Uberlandia",
         cityLocation: "Brasil",
-        settings: undefined,
-        weather: undefined,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
         key: "Ribeirão Preto",
         order: 5,
         cityName: "Ribeirão Preto",
         cityLocation: "Brasil",
-        settings: undefined,
-        weather: undefined,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
     ],
   },
@@ -125,25 +120,30 @@ export default createStore<State>({
             : " ",
         order: state.widgets.length,
         weather: undefined,
-        settings: undefined,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
       });
     },
     updateSettings(state: State) {
       state.settings = !state.settings;
     },
-    updateSettingsConfig(state: State, payload: any) {
+    updateSettingsConfig(
+      state: State,
+      payload: {
+        city: string;
+        settings: IWidgetSettings;
+      }
+    ) {
       const city = state.widgets.find((x) => x.cityName == payload.city);
       if (city == undefined) {
         return;
       }
-      city.config.minMaxtemperature = payload.settings.minMaxtemperature;
-      city.config.sunsetSunrise = payload.settings.sunsetSunrise;
-      city.config.windSpeed = payload.settings.windSpeed;
+      city.settings.showTemperature = payload.settings.showTemperature;
+      city.settings.showSunrise = payload.settings.showSunrise;
+      city.settings.showWindSpeed = payload.settings.showWindSpeed;
     },
   },
   actions: {},

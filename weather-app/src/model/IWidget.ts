@@ -5,10 +5,8 @@ export interface IWidget {
   order: number;
   cityName: string;
   cityLocation: string;
-  settings: IWidgetSettings | undefined;
+  settings: IWidgetSettings;
   weather: IWeather | undefined;
-
-  config: any;
 }
 
 export interface IWidgetSettings {

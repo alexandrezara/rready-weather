@@ -1,26 +1,26 @@
 <template>
   <div class="app-weather-card" :class="cssClasses">
-    <span class="title">{{ city!.cityName }}</span>
-    <span class="subtitle">{{ city!.cityLocation }}</span>
+    <span class="title">{{ widget!.cityName }}</span>
+    <span class="subtitle">{{ widget!.cityLocation }}</span>
 
     <div v-if="isLoading">Loading</div>
 
     <app-weather-card-config
       v-else-if="showSettings"
-      :settings="city?.config!"
+      :settings="widget.settings!"
       @update-settings="updateSettings"
     />
 
     <app-weather-card-main
       v-else-if="showingPanel(0)"
-      :weather="city?.weather!"
+      :weather="widget.weather!"
       :unit="temperatureUnit"
     />
 
     <app-weather-card-extra
       v-else-if="showingPanel(1)"
-      :weather="city?.weather!"
-      :config="city?.config!"
+      :weather="widget.weather!"
+      :settings="widget.settings!"
       :unit="temperatureUnit"
     />
 
@@ -57,7 +57,10 @@ export default defineComponent({
     AppWeatherCardConfig,
   },
   props: {
-    city: Object as PropType<IWidget>,
+    widget: {
+      type: Object as PropType<IWidget>,
+      required: true,
+    },
   },
   data: function() {
     return {
@@ -67,7 +70,7 @@ export default defineComponent({
   },
   computed: {
     isLoading() {
-      return this.city?.weather == undefined;
+      return this.widget.weather == undefined;
     },
     showSettings() {
       return this.$store.state.settings;
@@ -77,9 +80,9 @@ export default defineComponent({
     },
     haveExtraInfo() {
       return (
-        this.city?.config.minMaxtemperature ||
-        this.city?.config.sunsetSunrise ||
-        this.city?.config.windSpeed
+        this.widget.settings.showTemperature ||
+        this.widget.settings.showSunrise ||
+        this.widget.settings.showWindSpeed
       );
     },
     cssClasses() {
@@ -98,7 +101,7 @@ export default defineComponent({
     },
     updateSettings(settings: any) {
       this.$store.commit("updateSettingsConfig", {
-        city: this.city?.cityName,
+        city: this.widget.cityName,
         settings: settings,
       });
     },
