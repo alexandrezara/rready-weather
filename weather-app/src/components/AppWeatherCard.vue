@@ -29,16 +29,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType, WeatherConfig } from "vue";
-import AppTempetature from "./AppTempetature.vue";
-import { TemperatureUnit } from "@/helpers/Temperature";
 import AppIcon from "./base/AppIcon.vue";
 import AppCheckbox from "./base/AppCheckbox.vue";
-import { Time, Temperature } from "@rready/weather-sdk";
+import { Time, Temperature, TemperatureUnit } from "@rready/weather-sdk";
 
 export default defineComponent({
   name: "AppWeatherCard",
   components: {
-    AppTempetature,
     AppIcon,
     AppCheckbox,
   },
