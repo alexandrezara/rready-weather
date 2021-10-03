@@ -11,36 +11,66 @@ export default createStore<State>({
         subtitle: "Países Baixos",
         position: 1,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Zurich",
         subtitle: "Suíça",
         position: 0,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Belgrade",
         subtitle: "Sérvia",
         position: 2,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Skopje",
         subtitle: "Macedônia",
         position: 3,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Uberlandia",
         subtitle: "Brasil",
         position: 4,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Ribeirão Preto",
         subtitle: "Brasil",
         position: 5,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
     ],
   },
@@ -81,6 +111,11 @@ export default createStore<State>({
             : " ",
         position: state.cities.length,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       });
     },
     updateSettings(state: State) {

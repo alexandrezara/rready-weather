@@ -74,5 +74,5 @@ export default defineComponent({
       flex-grow: 1
       max-width: 960px
       margin: 0 auto
-      padding: $space-large
+      padding: $space-large 0
 </style>
