@@ -30,7 +30,7 @@ export default defineComponent({
   },
   computed: {
     cityList() {
-      return this.$store.state.cities.sort((a, b) => {
+      return this.$store.state.widgets.sort((a, b) => {
         return a.position - b.position;
       });
     },

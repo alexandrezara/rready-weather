@@ -5,7 +5,7 @@ import { createStore } from "vuex";
 export default createStore<State>({
   state: {
     settings: false,
-    cities: [
+    widgets: [
       {
         city: "Rotterdam",
         subtitle: "Países Baixos",
@@ -79,7 +79,7 @@ export default createStore<State>({
       if (payload.from == payload.to) {
         return;
       } else if (payload.from < payload.to) {
-        for (var city of state.cities) {
+        for (var city of state.widgets) {
           if (city.position > payload.from && city.position <= payload.to) {
             city.position -= 1;
           } else if (city.position == payload.from) {
@@ -87,7 +87,7 @@ export default createStore<State>({
           }
         }
       } else {
-        for (var city of state.cities) {
+        for (var city of state.widgets) {
           if (city.position >= payload.to && city.position < payload.from) {
             city.position += 1;
           } else if (city.position == payload.from) {
@@ -97,20 +97,20 @@ export default createStore<State>({
       }
     },
     updateWeather(state: State, payload: any) {
-      const city = state.cities.find((x) => x.city == payload.city);
+      const city = state.widgets.find((x) => x.city == payload.city);
       if (city == undefined) {
         return;
       }
       city.weather = payload.weather;
     },
     addWidget(state: State, payload: IAutocompleteItem) {
-      state.cities.push({
+      state.widgets.push({
         city: payload.structured_formatting.main_text,
         subtitle:
           payload.terms.length > 1
             ? payload.terms[payload.terms.length - 1].value
             : " ",
-        position: state.cities.length,
+        position: state.widgets.length,
         weather: null,
         config: {
           minMaxtemperature: false,
@@ -123,7 +123,7 @@ export default createStore<State>({
       state.settings = !state.settings;
     },
     updateSettingsConfig(state: State, payload: any) {
-      const city = state.cities.find((x) => x.city == payload.city);
+      const city = state.widgets.find((x) => x.city == payload.city);
       if (city == undefined) {
         return;
       }

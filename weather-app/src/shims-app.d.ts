@@ -7,7 +7,7 @@ import { Store } from "vuex";
 declare module "@vue/runtime-core" {
   interface State {
     settings: boolean,
-    cities: WeatherConfig[];
+    widgets: WeatherConfig[];
   }
 
   interface WeatherConfig {

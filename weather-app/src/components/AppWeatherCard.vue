@@ -122,8 +122,6 @@ export default defineComponent({
   &.info
     @include drop-shadow
 
-  &.settings
-
   .title
     display: inline-block
     font-size: $font-medium
