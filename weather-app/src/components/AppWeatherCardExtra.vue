@@ -1,6 +1,6 @@
 <template>
   <div class="app-weather-card-extra">
-    <div class="panel-line" v-if="configTemperature">
+    <div class="panel-line" v-if="config.minMaxtemperature">
       <div>
         <span class="key">Min:</span>
         <span class="val">{{ temperatureMin }}</span>
@@ -10,7 +10,7 @@
         <span class="val">{{ temperatureMax }}</span>
       </div>
     </div>
-    <div class="panel-line" v-if="configSunriseSunset">
+    <div class="panel-line" v-if="config.sunsetSunrise">
       <div>
         <span class="key">Sunrise:</span>
         <span class="val">{{ sunrise }}</span>
@@ -20,7 +20,7 @@
         <span class="val">{{ sunset }}</span>
       </div>
     </div>
-    <div class="panel-line" v-if="configWindSpeed">
+    <div class="panel-line" v-if="config.windSpeed">
       <div>
         <span class="key">Wind:</span>
         <span class="val">{{ windSpeed }}</span>
@@ -50,13 +50,14 @@ export default defineComponent({
       type: Number as PropType<TemperatureUnit>,
       required: true,
     },
-  },
-  data: function() {
-    return {
-      configTemperature: true,
-      configSunriseSunset: true,
-      configWindSpeed: true,
-    };
+    config: {
+      type: Object as PropType<{
+        minMaxtemperature: boolean;
+        sunsetSunrise: boolean;
+        windSpeed: boolean;
+      }>,
+      required: true,
+    },
   },
   computed: {
     temperatureMin() {

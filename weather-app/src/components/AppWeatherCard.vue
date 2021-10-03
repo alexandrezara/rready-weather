@@ -5,7 +5,11 @@
 
     <div v-if="isLoading">Loading</div>
 
-    <app-weather-card-config v-else-if="showSettings" />
+    <app-weather-card-config
+      v-else-if="showSettings"
+      :settings="city?.config!"
+      @update-settings="updateSettings"
+    />
 
     <app-weather-card-main
       v-else-if="showingPanel(0)"
@@ -16,12 +20,14 @@
     <app-weather-card-extra
       v-else-if="showingPanel(1)"
       :weather="city?.weather!"
+      :config="city?.config!"
       :unit="temperatureUnit"
     />
+
     <app-icon
-      v-if="showIcon"
-      class="icon-next"
-      :src="iconSrc"
+      v-if="showIconNext"
+      class="action-icon"
+      src="icon-next.svg"
       :size="36"
       :clicable="true"
       @click="nextPanel"
@@ -65,11 +71,15 @@ export default defineComponent({
     showSettings() {
       return this.$store.state.settings;
     },
-    showIcon() {
-      return !this.isLoading;
+    showIconNext() {
+      return !this.isLoading && !this.showSettings && this.haveExtraInfo;
     },
-    iconSrc() {
-      return this.showSettings ? "icon-ok.svg" : "icon-next.svg";
+    haveExtraInfo() {
+      return (
+        this.city?.config.minMaxtemperature ||
+        this.city?.config.sunsetSunrise ||
+        this.city?.config.windSpeed
+      );
     },
     cssClasses() {
       return {
@@ -84,6 +94,12 @@ export default defineComponent({
     },
     nextPanel() {
       this.panel = (this.panel + 1) % PANEL_COUNT;
+    },
+    updateSettings(settings: any) {
+      this.$store.commit("updateSettingsConfig", {
+        city: this.city?.city,
+        settings: settings,
+      });
     },
   },
 });
@@ -118,6 +134,6 @@ export default defineComponent({
     font-size: $font-small
     margin-bottom: $space-small
 
-  .icon-next
+  .action-icon
     align-self: flex-end
 </style>

@@ -54,6 +54,7 @@ export default defineComponent({
   padding: 8px
   background-color: white
   cursor: inherit
+  user-select: none
 
   &.clicable
     cursor: pointer
