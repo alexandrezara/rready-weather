@@ -48,7 +48,9 @@ export default defineComponent({
 
 <style scoped lang="sass">
 .app-icon
-  display: inline-block
+  display: flex
+  justify-content: center
+  align-items: center
   padding: 8px
   background-color: white
   cursor: inherit
@@ -60,8 +62,10 @@ export default defineComponent({
       background-color: $color-purple-light
 
   img
+    display: inline-block
     pointer-events: none
     user-select: none
     width: 100%
     height: 100%
+    object-fit: contain
 </style>

@@ -1,29 +1,31 @@
 <template>
-  <div class="app-weather-card" :class="[state]">
+  <div class="app-weather-card" :class="cssClasses">
     <span class="title">{{ city!.city }}</span>
     <span class="subtitle">{{ city!.subtitle }}</span>
-    <!-- <div v-if="state == 'info'" class="info">
-      <div class="temperature">{{ temperature }}</div>
-      <div class="condition">{{ condition }}</div>
-    </div> -->
-    <div v-if="state == 'info'" class="info" style="font-size: 12px;">
-      <div v-if="configTemperature">
-        Min: {{ temperatureMin }} <br />Max:
-        {{ temperatureMax }}
-      </div>
-      <div v-if="configSunriseSunset">
-        Sunrise: {{ sunrise }} / Sunset: {{ sunset }}
-      </div>
-      <div v-if="configWindSpeed">Wind: {{ windSpeed }}</div>
-    </div>
-    <div v-else-if="state == 'config'" class="config">
-      <app-checkbox v-model="configTemperature" text="Min/max temperature" />
-      <app-checkbox v-model="configSunriseSunset" text="Sunrise/sunset" />
-      <app-checkbox v-model="configWindSpeed" text="Wind speed" />
-    </div>
-    <!-- <div v-else-if="state == 'moving'" class="moving">
-      <app-icon src="icon-move.svg" />
-    </div> -->
+
+    <div v-if="isLoading">Loading</div>
+
+    <app-weather-card-config v-else-if="showSettings" />
+
+    <app-weather-card-main
+      v-else-if="showingPanel(0)"
+      :weather="city?.weather!"
+      :unit="temperatureUnit"
+    />
+
+    <app-weather-card-extra
+      v-else-if="showingPanel(1)"
+      :weather="city?.weather!"
+      :unit="temperatureUnit"
+    />
+    <app-icon
+      v-if="showIcon"
+      class="icon-next"
+      :src="iconSrc"
+      :size="36"
+      :clicable="true"
+      @click="nextPanel"
+    />
   </div>
 </template>
 
@@ -31,13 +33,21 @@
 import { defineComponent, PropType, WeatherConfig } from "vue";
 import AppIcon from "./base/AppIcon.vue";
 import AppCheckbox from "./base/AppCheckbox.vue";
-import { Time, Temperature, TemperatureUnit } from "@rready/weather-sdk";
+import { TemperatureUnit } from "@rready/weather-sdk";
+import AppWeatherCardMain from "./AppWeatherCardMain.vue";
+import AppWeatherCardExtra from "./AppWeatherCardExtra.vue";
+import AppWeatherCardConfig from "./AppWeatherCardConfig.vue";
+
+const PANEL_COUNT = 2;
 
 export default defineComponent({
   name: "AppWeatherCard",
   components: {
     AppIcon,
     AppCheckbox,
+    AppWeatherCardMain,
+    AppWeatherCardExtra,
+    AppWeatherCardConfig,
   },
   props: {
     city: Object as PropType<WeatherConfig>,
@@ -45,42 +55,35 @@ export default defineComponent({
   data: function() {
     return {
       temperatureUnit: TemperatureUnit.Celsius,
-      configTemperature: false,
-      configSunriseSunset: false,
-      configWindSpeed: false,
+      panel: 0,
     };
   },
   computed: {
-    state() {
-      return this.$store.state.settings ? "config" : "info";
+    isLoading() {
+      return this.city?.weather == undefined;
     },
-    temperature() {
-      return Temperature.build(
-        this.city?.weather?.main.temp,
-        TemperatureUnit.Celsius
-      )?.format();
+    showSettings() {
+      return this.$store.state.settings;
     },
-    condition() {
-      return this.city?.weather?.weather[0].main;
+    showIcon() {
+      return !this.isLoading;
     },
-    temperatureMin() {
-      return Temperature.build(this.city?.weather?.main.temp_min, 1)?.format();
+    iconSrc() {
+      return this.showSettings ? "icon-ok.svg" : "icon-next.svg";
     },
-    temperatureMax() {
-      return Temperature.build(this.city?.weather?.main.temp_max, 1)?.format();
+    cssClasses() {
+      return {
+        settings: this.showSettings,
+        info: !this.showSettings,
+      };
     },
-    sunrise() {
-      const times = this.city?.weather?.sys.sunrise!;
-      const offset = (this.city?.weather as any).timezone!;
-      return Time.build(times, offset)?.format();
+  },
+  methods: {
+    showingPanel(index: number) {
+      return index == this.panel;
     },
-    sunset() {
-      const times = this.city?.weather?.sys.sunset!;
-      const offset = (this.city?.weather as any).timezone!;
-      return Time.build(times, offset)?.format();
-    },
-    windSpeed() {
-      return `${this.city?.weather?.wind.speed} m/s`;
+    nextPanel() {
+      this.panel = (this.panel + 1) % PANEL_COUNT;
     },
   },
 });
@@ -95,13 +98,15 @@ export default defineComponent({
   align-items: center
   min-width: 220px
   max-width: 220px
-  min-height: 180px
+  min-height: 190px
   padding: $size-border-radius
   border-radius: $size-border-radius
   overflow: hidden
 
   &.info
     @include drop-shadow
+
+  &.settings
 
   .title
     display: inline-block
@@ -113,25 +118,6 @@ export default defineComponent({
     font-size: $font-small
     margin-bottom: $space-small
 
-  .info
-    position: relative
-    flex-grow: 1
-    text-align: center
-
-    .temperature
-      font-size: $font-huge
-
-    .condition
-      font-size: $font-medium
-
-  .app-checkbox
-    font-size: $font-small
-
-  .moving
-    position: relative
-    display: flex
-    flex-grow: 1
-    align-items: center
-    justify-content: center
-    user-select: none
+  .icon-next
+    align-self: flex-end
 </style>
