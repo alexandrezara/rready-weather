@@ -121,12 +121,15 @@ export default createStore<State>({
     },
 
     widgetAdd(state: State, payload: IMutationWidgetAdd) {
+      for (let widget of state.widgets) {
+        widget.order += 1;
+      }
       state.widgets.push({
         placeKey: payload.cityName,
         weatherKey: undefined,
         cityName: payload.cityName,
         cityLocation: payload.cityLocation,
-        order: state.widgets.length,
+        order: 0,
         weather: undefined,
         settings: {
           showTemperature: false,
@@ -155,5 +158,10 @@ export default createStore<State>({
     },
   },
   actions: {},
+  getters: {
+    findWidget: (state) => (city: string) => {
+      return state.widgets.find((x) => x.cityName == city);
+    },
+  },
   modules: {},
 });

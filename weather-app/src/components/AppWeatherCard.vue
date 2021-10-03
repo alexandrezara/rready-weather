@@ -1,5 +1,5 @@
 <template>
-  <div class="app-weather-card" :class="cssClasses">
+  <div class="app-weather-card" :key="widget.cityName" :class="cssClasses">
     <span class="title">{{ widget!.cityName }}</span>
     <span class="subtitle">{{ widget!.cityLocation }}</span>
 
@@ -50,6 +50,7 @@ const PANEL_COUNT = 2;
 
 export default defineComponent({
   name: "AppWeatherCard",
+  emits: ["request-weather-update"],
   components: {
     AppIcon,
     AppCheckbox,
@@ -62,6 +63,11 @@ export default defineComponent({
       type: Object as PropType<IWidget>,
       required: true,
     },
+  },
+  mounted() {
+    if (this.widget.weather == undefined) {
+      this.$emit("request-weather-update", this.widget.cityName);
+    }
   },
   data: function() {
     return {

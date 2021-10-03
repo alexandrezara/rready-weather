@@ -32,7 +32,8 @@ export default defineComponent({
   },
   methods: {
     addWidget(item: IAutocompleteItem) {
-      this.$store.commit("widgetAdd", this.convert(item));
+      const payload = this.convert(item);
+      this.$store.commit("widgetAdd", payload);
     },
     toggleConfiguringMode() {
       this.$store.commit("toggleConfiguringMode");
