@@ -15,6 +15,11 @@ declare module "@vue/runtime-core" {
     subtitle: string;
     position: number;
     weather: ICityWeather?;
+    config: {
+      minMaxtemperature: boolean;
+      sunsetSunrise: boolean;
+      windSpeed: boolean;
+    };
   }
 
   interface ComponentCustomProperties {

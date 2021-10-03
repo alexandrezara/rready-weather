@@ -11,36 +11,66 @@ export default createStore<State>({
         subtitle: "Países Baixos",
         position: 1,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Zurich",
         subtitle: "Suíça",
         position: 0,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Belgrade",
         subtitle: "Sérvia",
         position: 2,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Skopje",
         subtitle: "Macedônia",
         position: 3,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Uberlandia",
         subtitle: "Brasil",
         position: 4,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
       {
         city: "Ribeirão Preto",
         subtitle: "Brasil",
         position: 5,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       },
     ],
   },
@@ -68,9 +98,10 @@ export default createStore<State>({
     },
     updateWeather(state: State, payload: any) {
       const city = state.cities.find((x) => x.city == payload.city);
-      if (city) {
-        city.weather = payload.weather;
+      if (city == undefined) {
+        return;
       }
+      city.weather = payload.weather;
     },
     addWidget(state: State, payload: IAutocompleteItem) {
       state.cities.push({
@@ -81,10 +112,24 @@ export default createStore<State>({
             : " ",
         position: state.cities.length,
         weather: null,
+        config: {
+          minMaxtemperature: false,
+          sunsetSunrise: false,
+          windSpeed: false,
+        },
       });
     },
     updateSettings(state: State) {
       state.settings = !state.settings;
+    },
+    updateSettingsConfig(state: State, payload: any) {
+      const city = state.cities.find((x) => x.city == payload.city);
+      if (city == undefined) {
+        return;
+      }
+      city.config.minMaxtemperature = payload.settings.minMaxtemperature;
+      city.config.sunsetSunrise = payload.settings.sunsetSunrise;
+      city.config.windSpeed = payload.settings.windSpeed;
     },
   },
   actions: {},
