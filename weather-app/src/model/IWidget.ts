@@ -1,7 +1,8 @@
 import { IWeather } from "./IWeather";
 
 export interface IWidget {
-  key: string;
+  placeKey: string;
+  weatherKey: string | undefined;
   order: number;
   cityName: string;
   cityLocation: string;

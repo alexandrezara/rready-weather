@@ -2,13 +2,20 @@ import { IAutocompleteItem } from "@/helpers/AutocompleteService";
 import { IWidgetSettings } from "@/model/IWidget";
 import { State } from "vue";
 import { createStore } from "vuex";
+import {
+  IMutationWidgetAdd,
+  IMutationWidgetReorder,
+  IMutationWidgetUpdateSettings,
+  IMutationWidgetUpdateWeather,
+} from "./mutations";
 
 export default createStore<State>({
   state: {
     configuringMode: false,
     widgets: [
       {
-        key: "Rotterdam",
+        placeKey: "Rotterdam",
+        weatherKey: undefined,
         order: 1,
         cityName: "Rotterdam",
         cityLocation: "Países Baixos",
@@ -20,7 +27,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        key: "Zurich",
+        placeKey: "Zurich",
+        weatherKey: undefined,
         order: 0,
         cityName: "Zurich",
         cityLocation: "Suíça",
@@ -32,7 +40,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        key: "Belgrade",
+        placeKey: "Belgrade",
+        weatherKey: undefined,
         order: 2,
         cityName: "Belgrade",
         cityLocation: "Sérvia",
@@ -44,7 +53,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        key: "Skopje",
+        placeKey: "Skopje",
+        weatherKey: undefined,
         order: 3,
         cityName: "Skopje",
         cityLocation: "Macedônia",
@@ -56,7 +66,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        key: "Uberlandia",
+        placeKey: "Uberlandia",
+        weatherKey: undefined,
         order: 4,
         cityName: "Uberlandia",
         cityLocation: "Brasil",
@@ -68,7 +79,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        key: "Ribeirão Preto",
+        placeKey: "Ribeirão Preto",
+        weatherKey: undefined,
         order: 5,
         cityName: "Ribeirão Preto",
         cityLocation: "Brasil",
@@ -82,7 +94,11 @@ export default createStore<State>({
     ],
   },
   mutations: {
-    moveCity(state: State, payload: any) {
+    toggleConfiguringMode(state: State) {
+      state.configuringMode = !state.configuringMode;
+    },
+
+    widgetReorder(state: State, payload: IMutationWidgetReorder) {
       if (payload.from == payload.to) {
         return;
       } else if (payload.from < payload.to) {
@@ -103,21 +119,13 @@ export default createStore<State>({
         }
       }
     },
-    updateWeather(state: State, payload: any) {
-      const city = state.widgets.find((x) => x.cityName == payload.city);
-      if (city == undefined) {
-        return;
-      }
-      city.weather = payload.weather;
-    },
-    addWidget(state: State, payload: IAutocompleteItem) {
+
+    widgetAdd(state: State, payload: IMutationWidgetAdd) {
       state.widgets.push({
-        key: payload.structured_formatting.main_text,
-        cityName: payload.structured_formatting.main_text,
-        cityLocation:
-          payload.terms.length > 1
-            ? payload.terms[payload.terms.length - 1].value
-            : " ",
+        placeKey: payload.cityName,
+        weatherKey: undefined,
+        cityName: payload.cityName,
+        cityLocation: payload.cityLocation,
         order: state.widgets.length,
         weather: undefined,
         settings: {
@@ -127,16 +135,16 @@ export default createStore<State>({
         },
       });
     },
-    updateSettings(state: State) {
-      state.configuringMode = !state.configuringMode;
-    },
-    updateSettingsConfig(
-      state: State,
-      payload: {
-        city: string;
-        settings: IWidgetSettings;
+
+    widgetUpdateWeather(state: State, payload: IMutationWidgetUpdateWeather) {
+      const city = state.widgets.find((x) => x.cityName == payload.city);
+      if (city == undefined) {
+        return;
       }
-    ) {
+      city.weather = payload.weather;
+    },
+
+    widgetUpdateSettings(state: State, payload: IMutationWidgetUpdateSettings) {
       const city = state.widgets.find((x) => x.cityName == payload.city);
       if (city == undefined) {
         return;

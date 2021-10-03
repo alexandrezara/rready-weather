@@ -21,6 +21,10 @@ import AppDraggableCard from "@/components/base/AppDraggable.vue";
 import { ICityWeather } from "@rready/weather-sdk";
 import { IWeather } from "@/model/IWeather";
 import { IWidget } from "@/model/IWidget";
+import {
+  IMutationWidgetReorder,
+  IMutationWidgetUpdateWeather,
+} from "@/store/mutations";
 
 export default defineComponent({
   name: "Home",
@@ -43,23 +47,27 @@ export default defineComponent({
     },
   },
   methods: {
-    updateWidgetOrder(data: any) {
-      this.$store.commit("moveCity", data);
+    updateWidgetOrder(data: IMutationWidgetReorder) {
+      this.$store.commit("widgetReorder", data);
     },
     reloadData() {
       this.widgets.forEach((item) => {
         this.$api
           .weather(item.cityName)
-          .then((data) => {
-            this.$store.commit("updateWeather", {
-              city: item.cityName,
-              weather: this.convertWeather(data),
-            });
+          .then((response) => {
+            this.successWeather(item.cityName, response);
           })
           .catch((error) => {
             alert(error);
           });
       });
+    },
+    successWeather(city: string, response: ICityWeather) {
+      const weather = this.convertWeather(response);
+      this.$store.commit("widgetUpdateWeather", {
+        city: city,
+        weather: weather,
+      } as IMutationWidgetUpdateWeather);
     },
     convertWeather(response: ICityWeather): IWeather {
       return {

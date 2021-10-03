@@ -44,6 +44,7 @@ import AppWeatherCardMain from "./AppWeatherCardMain.vue";
 import AppWeatherCardExtra from "./AppWeatherCardExtra.vue";
 import AppWeatherCardConfig from "./AppWeatherCardConfig.vue";
 import { IWidget } from "@/model/IWidget";
+import { IMutationWidgetUpdateSettings } from "@/store/mutations";
 
 const PANEL_COUNT = 2;
 
@@ -100,10 +101,10 @@ export default defineComponent({
       this.panel = (this.panel + 1) % PANEL_COUNT;
     },
     updateSettings(settings: any) {
-      this.$store.commit("updateSettingsConfig", {
+      this.$store.commit("widgetUpdateSettings", {
         city: this.widget.cityName,
         settings: settings,
-      });
+      } as IMutationWidgetUpdateSettings);
     },
   },
 });

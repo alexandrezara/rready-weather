@@ -39,13 +39,13 @@ export default defineComponent({
     },
   },
   watch: {
-    minMaxtemperature(value: boolean, _: any) {
+    showTemperature() {
       this.$emit("update-settings", this.config);
     },
-    sunsetSunrise(value: boolean, _: any) {
+    showSunrise() {
       this.$emit("update-settings", this.config);
     },
-    windSpeed(value: boolean, _: any) {
+    showWindSpeed() {
       this.$emit("update-settings", this.config);
     },
   },

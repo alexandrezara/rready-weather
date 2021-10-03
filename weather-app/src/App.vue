@@ -22,6 +22,7 @@ import { defineComponent } from "vue";
 import AppSearch from "@/components/AppSearch.vue";
 import AppIcon from "@/components/base/AppIcon.vue";
 import { IAutocompleteItem } from "./helpers/AutocompleteService";
+import { IMutationWidgetAdd } from "./store/mutations";
 
 export default defineComponent({
   name: "App",
@@ -31,10 +32,17 @@ export default defineComponent({
   },
   methods: {
     addWidget(item: IAutocompleteItem) {
-      this.$store.commit("addWidget", item);
+      this.$store.commit("widgetAdd", this.convert(item));
     },
     toggleConfiguringMode() {
-      this.$store.commit("updateSettings");
+      this.$store.commit("toggleConfiguringMode");
+    },
+    convert(item: IAutocompleteItem): IMutationWidgetAdd {
+      return {
+        cityName: item.structured_formatting.main_text,
+        cityLocation:
+          item.terms.length > 1 ? item.terms[item.terms.length - 1].value : "",
+      };
     },
   },
 });

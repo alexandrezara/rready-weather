@@ -26,8 +26,8 @@ export default defineComponent({
   name: "AppDraggable",
   emits: ["drag-and-drop"],
   props: {
-    enableDrag: Boolean,
     index: Number,
+    enableDrag: Boolean,
   },
   data: function() {
     return {
