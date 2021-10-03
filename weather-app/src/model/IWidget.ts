@@ -1,12 +1,14 @@
 import { IWeather } from "./IWeather";
 
 export interface IWidget {
-  placeId: string;
+  key: string;
   order: number;
   cityName: string;
   cityLocation: string;
-  settings: IWidgetSettings;
-  weather: IWeather;
+  settings: IWidgetSettings | undefined;
+  weather: IWeather | undefined;
+
+  config: any;
 }
 
 export interface IWidgetSettings {

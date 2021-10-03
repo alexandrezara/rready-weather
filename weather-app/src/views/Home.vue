@@ -3,7 +3,7 @@
     <ul class="city-list">
       <li v-for="city in cityList">
         <app-draggable-card
-          :index="city.position"
+          :index="city.order"
           :active="editingMode"
           @drag-and-drop="moveCards"
         >
@@ -31,7 +31,7 @@ export default defineComponent({
   computed: {
     cityList() {
       return this.$store.state.widgets.sort((a, b) => {
-        return a.position - b.position;
+        return a.order - b.order;
       });
     },
     editingMode() {
@@ -45,10 +45,10 @@ export default defineComponent({
     reloadData() {
       this.cityList.forEach((item) => {
         this.$api
-          .weather(item.city)
+          .weather(item.cityName)
           .then((data) => {
             this.$store.commit("updateWeather", {
-              city: item.city,
+              city: item.cityName,
               weather: data,
             });
           })

@@ -31,19 +31,15 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import {
-  Time,
-  Temperature,
-  TemperatureUnit,
-  ICityWeather,
-} from "@rready/weather-sdk";
+import { Time, Temperature, TemperatureUnit } from "@rready/weather-sdk";
+import { IWeather } from "@/model/IWeather";
 
 export default defineComponent({
   name: "AppWeatherCardMain",
   components: {},
   props: {
     weather: {
-      type: Object as PropType<ICityWeather>,
+      type: Object as PropType<IWeather>,
       required: true,
     },
     unit: {
@@ -61,23 +57,23 @@ export default defineComponent({
   },
   computed: {
     temperatureMin() {
-      return Temperature.build(this.weather.main.temp_min, 1)?.format();
+      return Temperature.build(this.weather.temp_min, 1)?.format();
     },
     temperatureMax() {
-      return Temperature.build(this.weather.main.temp_max, 1)?.format();
+      return Temperature.build(this.weather.temp_max, 1)?.format();
     },
     sunrise() {
-      const times = this.weather.sys.sunrise!;
+      const times = this.weather.sunrise!;
       const offset = (this.weather as any).timezone!;
       return Time.build(times, offset)?.format();
     },
     sunset() {
-      const times = this.weather?.sys.sunset!;
+      const times = this.weather?.sunset!;
       const offset = (this.weather as any).timezone!;
       return Time.build(times, offset)?.format();
     },
     windSpeed() {
-      return `${this.weather?.wind.speed} m/s`;
+      return `${this.weather?.windSpeed} m/s`;
     },
   },
 });

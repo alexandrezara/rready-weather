@@ -1,7 +1,7 @@
 <template>
   <div class="app-weather-card" :class="cssClasses">
-    <span class="title">{{ city!.city }}</span>
-    <span class="subtitle">{{ city!.subtitle }}</span>
+    <span class="title">{{ city!.cityName }}</span>
+    <span class="subtitle">{{ city!.cityLocation }}</span>
 
     <div v-if="isLoading">Loading</div>
 
@@ -36,13 +36,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, WeatherConfig } from "vue";
+import { defineComponent, PropType } from "vue";
 import AppIcon from "./base/AppIcon.vue";
 import AppCheckbox from "./base/AppCheckbox.vue";
 import { TemperatureUnit } from "@rready/weather-sdk";
 import AppWeatherCardMain from "./AppWeatherCardMain.vue";
 import AppWeatherCardExtra from "./AppWeatherCardExtra.vue";
 import AppWeatherCardConfig from "./AppWeatherCardConfig.vue";
+import { IWidget } from "@/model/IWidget";
 
 const PANEL_COUNT = 2;
 
@@ -56,7 +57,7 @@ export default defineComponent({
     AppWeatherCardConfig,
   },
   props: {
-    city: Object as PropType<WeatherConfig>,
+    city: Object as PropType<IWidget>,
   },
   data: function() {
     return {
@@ -97,7 +98,7 @@ export default defineComponent({
     },
     updateSettings(settings: any) {
       this.$store.commit("updateSettingsConfig", {
-        city: this.city?.city,
+        city: this.city?.cityName,
         settings: settings,
       });
     },

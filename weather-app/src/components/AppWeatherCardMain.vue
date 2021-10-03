@@ -7,18 +7,15 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import {
-  Temperature,
-  TemperatureUnit,
-  ICityWeather,
-} from "@rready/weather-sdk";
+import { Temperature, TemperatureUnit } from "@rready/weather-sdk";
+import { IWeather } from "@/model/IWeather";
 
 export default defineComponent({
   name: "AppWeatherCardMain",
   components: {},
   props: {
     weather: {
-      type: Object as PropType<ICityWeather>,
+      type: Object as PropType<IWeather>,
       required: true,
     },
     unit: {
@@ -31,10 +28,10 @@ export default defineComponent({
   },
   computed: {
     temperature() {
-      return Temperature.build(this.weather.main.temp, this.unit)?.format();
+      return Temperature.build(this.weather.temp, this.unit)?.format();
     },
     condition() {
-      return this.weather.weather[0].main;
+      return this.weather.condition.name;
     },
   },
 });

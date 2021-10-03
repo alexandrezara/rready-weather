@@ -7,10 +7,12 @@ export default createStore<State>({
     settings: false,
     widgets: [
       {
-        city: "Rotterdam",
-        subtitle: "Países Baixos",
-        position: 1,
-        weather: null,
+        key: "Rotterdam",
+        order: 1,
+        cityName: "Rotterdam",
+        cityLocation: "Países Baixos",
+        settings: undefined,
+        weather: undefined,
         config: {
           minMaxtemperature: false,
           sunsetSunrise: false,
@@ -18,10 +20,12 @@ export default createStore<State>({
         },
       },
       {
-        city: "Zurich",
-        subtitle: "Suíça",
-        position: 0,
-        weather: null,
+        key: "Zurich",
+        order: 0,
+        cityName: "Zurich",
+        cityLocation: "Suíça",
+        settings: undefined,
+        weather: undefined,
         config: {
           minMaxtemperature: false,
           sunsetSunrise: false,
@@ -29,10 +33,12 @@ export default createStore<State>({
         },
       },
       {
-        city: "Belgrade",
-        subtitle: "Sérvia",
-        position: 2,
-        weather: null,
+        key: "Belgrade",
+        order: 2,
+        cityName: "Belgrade",
+        cityLocation: "Sérvia",
+        settings: undefined,
+        weather: undefined,
         config: {
           minMaxtemperature: false,
           sunsetSunrise: false,
@@ -40,10 +46,12 @@ export default createStore<State>({
         },
       },
       {
-        city: "Skopje",
-        subtitle: "Macedônia",
-        position: 3,
-        weather: null,
+        key: "Skopje",
+        order: 3,
+        cityName: "Skopje",
+        cityLocation: "Macedônia",
+        settings: undefined,
+        weather: undefined,
         config: {
           minMaxtemperature: false,
           sunsetSunrise: false,
@@ -51,10 +59,12 @@ export default createStore<State>({
         },
       },
       {
-        city: "Uberlandia",
-        subtitle: "Brasil",
-        position: 4,
-        weather: null,
+        key: "Uberlandia",
+        order: 4,
+        cityName: "Uberlandia",
+        cityLocation: "Brasil",
+        settings: undefined,
+        weather: undefined,
         config: {
           minMaxtemperature: false,
           sunsetSunrise: false,
@@ -62,10 +72,12 @@ export default createStore<State>({
         },
       },
       {
-        city: "Ribeirão Preto",
-        subtitle: "Brasil",
-        position: 5,
-        weather: null,
+        key: "Ribeirão Preto",
+        order: 5,
+        cityName: "Ribeirão Preto",
+        cityLocation: "Brasil",
+        settings: undefined,
+        weather: undefined,
         config: {
           minMaxtemperature: false,
           sunsetSunrise: false,
@@ -80,24 +92,24 @@ export default createStore<State>({
         return;
       } else if (payload.from < payload.to) {
         for (var city of state.widgets) {
-          if (city.position > payload.from && city.position <= payload.to) {
-            city.position -= 1;
-          } else if (city.position == payload.from) {
-            city.position = payload.to;
+          if (city.order > payload.from && city.order <= payload.to) {
+            city.order -= 1;
+          } else if (city.order == payload.from) {
+            city.order = payload.to;
           }
         }
       } else {
         for (var city of state.widgets) {
-          if (city.position >= payload.to && city.position < payload.from) {
-            city.position += 1;
-          } else if (city.position == payload.from) {
-            city.position = payload.to;
+          if (city.order >= payload.to && city.order < payload.from) {
+            city.order += 1;
+          } else if (city.order == payload.from) {
+            city.order = payload.to;
           }
         }
       }
     },
     updateWeather(state: State, payload: any) {
-      const city = state.widgets.find((x) => x.city == payload.city);
+      const city = state.widgets.find((x) => x.cityName == payload.city);
       if (city == undefined) {
         return;
       }
@@ -105,13 +117,15 @@ export default createStore<State>({
     },
     addWidget(state: State, payload: IAutocompleteItem) {
       state.widgets.push({
-        city: payload.structured_formatting.main_text,
-        subtitle:
+        key: payload.structured_formatting.main_text,
+        cityName: payload.structured_formatting.main_text,
+        cityLocation:
           payload.terms.length > 1
             ? payload.terms[payload.terms.length - 1].value
             : " ",
-        position: state.widgets.length,
-        weather: null,
+        order: state.widgets.length,
+        weather: undefined,
+        settings: undefined,
         config: {
           minMaxtemperature: false,
           sunsetSunrise: false,
@@ -123,7 +137,7 @@ export default createStore<State>({
       state.settings = !state.settings;
     },
     updateSettingsConfig(state: State, payload: any) {
-      const city = state.widgets.find((x) => x.city == payload.city);
+      const city = state.widgets.find((x) => x.cityName == payload.city);
       if (city == undefined) {
         return;
       }
