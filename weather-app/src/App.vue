@@ -7,7 +7,7 @@
         <app-icon
           src="icon-settings.svg"
           :clicable="true"
-          @click="activateSettings"
+          @click="toggleConfiguringMode"
         />
       </nav>
     </header>
@@ -33,7 +33,7 @@ export default defineComponent({
     addWidget(item: IAutocompleteItem) {
       this.$store.commit("addWidget", item);
     },
-    activateSettings() {
+    toggleConfiguringMode() {
       this.$store.commit("updateSettings");
     },
   },

@@ -6,7 +6,7 @@
     <div v-if="isLoading">Loading</div>
 
     <app-weather-card-config
-      v-else-if="showSettings"
+      v-else-if="configuringMode"
       :settings="widget.settings!"
       @update-settings="updateSettings"
     />
@@ -72,11 +72,11 @@ export default defineComponent({
     isLoading() {
       return this.widget.weather == undefined;
     },
-    showSettings() {
-      return this.$store.state.settings;
+    configuringMode() {
+      return this.$store.state.configuringMode;
     },
     showIconNext() {
-      return !this.isLoading && !this.showSettings && this.haveExtraInfo;
+      return !this.isLoading && !this.configuringMode && this.haveExtraInfo;
     },
     haveExtraInfo() {
       return (
@@ -87,8 +87,8 @@ export default defineComponent({
     },
     cssClasses() {
       return {
-        settings: this.showSettings,
-        info: !this.showSettings,
+        settings: this.configuringMode,
+        info: !this.configuringMode,
       };
     },
   },

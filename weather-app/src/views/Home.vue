@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <ul class="city-list">
-      <li v-for="city in cityList">
+    <ul class="widget-list">
+      <li v-for="widget in widgets">
         <app-draggable-card
-          :index="city.order"
-          :active="editingMode"
-          @drag-and-drop="moveCards"
+          :index="widget.order"
+          :enableDrag="configuringMode"
+          @drag-and-drop="updateWidgetOrder"
         >
-          <app-weather-card :widget="city" />
+          <app-weather-card :widget="widget" />
         </app-draggable-card>
       </li>
     </ul>
@@ -20,6 +20,7 @@ import AppWeatherCard from "@/components/AppWeatherCard.vue";
 import AppDraggableCard from "@/components/AppDraggableCard.vue";
 import { ICityWeather } from "@rready/weather-sdk";
 import { IWeather } from "@/model/IWeather";
+import { IWidget } from "@/model/IWidget";
 
 export default defineComponent({
   name: "Home",
@@ -31,21 +32,22 @@ export default defineComponent({
     return {};
   },
   computed: {
-    cityList() {
-      return this.$store.state.widgets.sort((a, b) => {
+    widgets() {
+      const copy = [...this.$store.state.widgets];
+      return copy.sort((a: IWidget, b: IWidget) => {
         return a.order - b.order;
       });
     },
-    editingMode() {
-      return this.$store.state.settings;
+    configuringMode() {
+      return this.$store.state.configuringMode;
     },
   },
   methods: {
-    moveCards(data: any) {
+    updateWidgetOrder(data: any) {
       this.$store.commit("moveCity", data);
     },
     reloadData() {
-      this.cityList.forEach((item) => {
+      this.widgets.forEach((item) => {
         this.$api
           .weather(item.cityName)
           .then((data) => {
@@ -85,7 +87,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="sass">
-ul.city-list
+ul.widget-list
   display: flex
   flex-wrap: wrap
   justify-content: center

@@ -5,7 +5,7 @@ import { createStore } from "vuex";
 
 export default createStore<State>({
   state: {
-    settings: false,
+    configuringMode: false,
     widgets: [
       {
         key: "Rotterdam",
@@ -128,7 +128,7 @@ export default createStore<State>({
       });
     },
     updateSettings(state: State) {
-      state.settings = !state.settings;
+      state.configuringMode = !state.configuringMode;
     },
     updateSettingsConfig(
       state: State,

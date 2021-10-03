@@ -7,7 +7,7 @@ import { IWidget } from "./model/IWidget";
 
 declare module "@vue/runtime-core" {
   interface State {
-    settings: boolean;
+    configuringMode: boolean;
     widgets: IWidget[];
   }
 
