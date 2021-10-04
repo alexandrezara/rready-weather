@@ -1,4 +1,4 @@
-import { IAutocompleteItem } from "@/helpers/AutocompleteService";
+import { IAutocompleteItem } from "@/services/AutocompleteService";
 import { IWidgetSettings } from "@/model/IWidget";
 import { State } from "vue";
 import { createStore } from "vuex";
