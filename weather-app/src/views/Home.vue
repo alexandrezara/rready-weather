@@ -20,10 +20,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import AppWeatherCard from "@/components/AppWeatherCard.vue";
 import AppDraggableCard from "@/components/base/AppDraggable.vue";
+import AppWeatherCard from "@/components/AppWeatherCard.vue";
 import { ICityWeather } from "@rready/weather-sdk";
-import { IWeather } from "@/model/IWeather";
+import { Converter } from "@/model/Converters";
 import { IWidget } from "@/model/IWidget";
 import {
   IMutationWidgetReorder,
@@ -63,32 +63,11 @@ export default defineComponent({
         });
     },
     successWeather(city: string, response: ICityWeather) {
-      const weather = this.convertWeather(response);
+      const weather = Converter.toIWeather(response);
       this.$store.commit("widgetUpdateWeather", {
         city: city,
         weather: weather,
       } as IMutationWidgetUpdateWeather);
-    },
-    convertWeather(response: ICityWeather): IWeather {
-      return {
-        temp: response.main.temp,
-        pressure: response.main.pressure,
-        humidity: response.main.humidity,
-        temp_min: response.main.temp_min,
-        temp_max: response.main.temp_max,
-        condition: {
-          name: response.weather[0].main,
-          description: response.weather[0].description,
-          icon: response.weather[0].icon,
-        },
-        visibility: response.visibility,
-        windSpeed: response.wind.speed,
-        windDeg: response.wind.deg,
-        country: response.sys.country,
-        sunrise: response.sys.sunrise,
-        sunset: response.sys.sunset,
-        timezone: response.timezone,
-      };
     },
   },
 });
