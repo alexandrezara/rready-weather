@@ -3,27 +3,28 @@
     <span class="title">{{ widget!.cityName }}</span>
     <span class="subtitle">{{ widget!.cityLocation }}</span>
 
-    <div v-if="isLoading">Loading</div>
+    <transition name="slide-fade" mode="out-in">
+      <div v-if="isLoading">Loading</div>
 
-    <app-weather-card-config
-      v-else-if="configuringMode"
-      :settings="widget.settings!"
-      @update-settings="updateSettings"
-    />
+      <app-weather-card-config
+        v-else-if="configuringMode"
+        :settings="widget.settings!"
+        @update-settings="updateSettings"
+      />
 
-    <app-weather-card-main
-      v-else-if="showingPanel(0)"
-      :weather="widget.weather!"
-      :unit="temperatureUnit"
-    />
+      <app-weather-card-main
+        v-else-if="showingPanel(0)"
+        :weather="widget.weather!"
+        :unit="temperatureUnit"
+      />
 
-    <app-weather-card-extra
-      v-else-if="showingPanel(1)"
-      :weather="widget.weather!"
-      :settings="widget.settings!"
-      :unit="temperatureUnit"
-    />
-
+      <app-weather-card-extra
+        v-else-if="showingPanel(1)"
+        :weather="widget.weather!"
+        :settings="widget.settings!"
+        :unit="temperatureUnit"
+      />
+    </transition>
     <app-icon
       v-if="showIconNext"
       class="action-icon"
@@ -117,6 +118,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="sass">
+@import "@/styles/transitions.sass"
+
 .app-weather-card
   position: relative
   border: 2px solid white !important

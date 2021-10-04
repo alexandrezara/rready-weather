@@ -33,9 +33,6 @@ import {
 export default defineComponent({
   name: "Home",
   components: { AppWeatherCard, AppDraggableCard },
-  created() {
-    //this.reloadData();
-  },
   data: function() {
     return {};
   },
@@ -54,18 +51,6 @@ export default defineComponent({
     updateWidgetOrder(data: IMutationWidgetReorder) {
       this.$store.commit("widgetReorder", data);
     },
-    // reloadData() {
-    //   this.widgets.forEach((item) => {
-    //     this.$api
-    //       .weather(item.cityName)
-    //       .then((response) => {
-    //         this.successWeather(item.cityName, response);
-    //       })
-    //       .catch((error) => {
-    //         alert(error);
-    //       });
-    //   });
-    // },
     requestUpdate(city: string) {
       console.log("Request Update: " + city);
       this.$api
