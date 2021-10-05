@@ -16,6 +16,10 @@ export interface IMutationWidgetUpdateWeather {
   weather: IWeather;
 }
 
+export interface IMutationWidgetUpdateWeatherFail {
+  city: string;
+}
+
 export interface IMutationWidgetUpdateSettings {
   city: string;
   settings: IWidgetSettings;

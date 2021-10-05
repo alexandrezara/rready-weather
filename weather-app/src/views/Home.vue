@@ -27,6 +27,7 @@ import { IWidget } from "@/model/IWidget";
 import {
   IMutationWidgetReorder,
   IMutationWidgetUpdateWeather,
+  IMutationWidgetUpdateWeatherFail,
 } from "@/store/mutations";
 
 export default defineComponent({
@@ -51,14 +52,13 @@ export default defineComponent({
       this.$store.commit("widgetReorder", data);
     },
     requestUpdate(city: string) {
-      console.log("Request Update: " + city);
       this.$api
         .weather(city)
         .then((response) => {
           this.successWeather(city, response);
         })
-        .catch((error) => {
-          alert(error);
+        .catch(() => {
+          this.failWeather(city);
         });
     },
     successWeather(city: string, response: ICityWeather) {
@@ -67,6 +67,11 @@ export default defineComponent({
         city: city,
         weather: weather,
       } as IMutationWidgetUpdateWeather);
+    },
+    failWeather(city: string) {
+      this.$store.commit("widgetUpdateWeatherFail", {
+        city: city,
+      } as IMutationWidgetUpdateWeatherFail);
     },
   },
 });

@@ -54,8 +54,6 @@ export default defineComponent({
 
 <style scoped lang="sass">
 .app-weather-card-config
-  position: relative
-  flex-grow: 1
   text-align: center
 
   .app-checkbox

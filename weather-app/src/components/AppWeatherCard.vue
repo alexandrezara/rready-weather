@@ -4,22 +4,38 @@
     <span class="subtitle">{{ widget!.cityLocation }}</span>
 
     <transition name="slide-fade" mode="out-in">
-      <div v-if="isLoading">Loading</div>
+      <div v-if="isLoading" class="panel status">
+        <span>Loading</span>
+      </div>
+
+      <div v-else-if="isFail" class="panel status fail">
+        <span>Ops! Something went wrong...</span>
+        <span>Click refresh</span>
+        <app-icon
+          src="icon-refresh.svg"
+          :size="36"
+          :clicable="true"
+          @click="refresh"
+        />
+      </div>
 
       <app-weather-card-config
         v-else-if="configuringMode"
+        class="panel"
         :settings="widget.settings!"
         @update-settings="updateSettings"
       />
 
       <app-weather-card-main
         v-else-if="showingPanel(0)"
+        class="panel"
         :weather="widget.weather!"
         :unit="temperatureUnit"
       />
 
       <app-weather-card-extra
         v-else-if="showingPanel(1)"
+        class="panel"
         :weather="widget.weather!"
         :settings="widget.settings!"
         :unit="temperatureUnit"
@@ -67,7 +83,7 @@ export default defineComponent({
   },
   mounted() {
     if (this.widget.weather == undefined) {
-      this.$emit("request-weather-update", this.widget.cityName);
+      this.refresh();
     }
   },
   data: function() {
@@ -78,13 +94,21 @@ export default defineComponent({
   },
   computed: {
     isLoading() {
-      return this.widget.weather == undefined;
+      return this.widget.success && this.widget.weather == undefined;
+    },
+    isFail() {
+      return !this.widget.success;
     },
     configuringMode() {
       return this.$store.state.configuringMode;
     },
     showIconNext() {
-      return !this.isLoading && !this.configuringMode && this.haveExtraInfo;
+      return (
+        !this.isLoading &&
+        !this.isFail &&
+        !this.configuringMode &&
+        this.haveExtraInfo
+      );
     },
     haveExtraInfo() {
       return (
@@ -109,6 +133,9 @@ export default defineComponent({
     },
     nextPanel() {
       this.panel = (this.panel + 1) % PANEL_COUNT;
+    },
+    refresh() {
+      this.$emit("request-weather-update", this.widget.cityName);
     },
     updateSettings(settings: any) {
       this.$store.commit("widgetUpdateSettings", {
@@ -148,6 +175,20 @@ export default defineComponent({
     display: inline-block
     font-size: $font-small
     margin-bottom: $space-small
+
+  .panel
+    position: relative
+    flex-grow: 1
+
+  .status
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    text-align: center
+
+  .fail
+    font-size: $font-small
 
   .action-icon
     align-self: flex-end

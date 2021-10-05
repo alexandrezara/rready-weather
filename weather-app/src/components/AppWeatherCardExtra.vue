@@ -78,8 +78,6 @@ export default defineComponent({
 
 <style scoped lang="sass">
 .app-weather-card-extra
-  position: relative
-  flex-grow: 1
   font-size: $font-small
 
   .panel-line

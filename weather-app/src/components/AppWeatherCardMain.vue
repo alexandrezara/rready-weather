@@ -39,8 +39,6 @@ export default defineComponent({
 
 <style scoped lang="sass">
 .app-weather-card-main
-  position: relative
-  flex-grow: 1
   text-align: center
 
   .temperature

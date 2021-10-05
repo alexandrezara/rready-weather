@@ -6,6 +6,7 @@ import {
   IMutationWidgetReorder,
   IMutationWidgetUpdateSettings,
   IMutationWidgetUpdateWeather,
+  IMutationWidgetUpdateWeatherFail,
 } from "./mutations";
 
 export default createStore<State>({
@@ -14,8 +15,8 @@ export default createStore<State>({
     configuringMode: false,
     widgets: [
       {
-        placeKey: "Rotterdam",
-        weatherKey: undefined,
+        searchKey: "Rotterdam",
+        success: true,
         order: 1,
         cityName: "Rotterdam",
         cityLocation: "Países Baixos",
@@ -27,8 +28,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        placeKey: "Zurich",
-        weatherKey: undefined,
+        searchKey: "Zurich",
+        success: true,
         order: 0,
         cityName: "Zurich",
         cityLocation: "Suíça",
@@ -40,8 +41,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        placeKey: "Belgrade",
-        weatherKey: undefined,
+        searchKey: "Belgrade",
+        success: true,
         order: 2,
         cityName: "Belgrade",
         cityLocation: "Sérvia",
@@ -53,8 +54,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        placeKey: "Skopje",
-        weatherKey: undefined,
+        searchKey: "Skopje",
+        success: true,
         order: 3,
         cityName: "Skopje",
         cityLocation: "Macedônia",
@@ -66,8 +67,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        placeKey: "Uberlandia",
-        weatherKey: undefined,
+        searchKey: "Uberlandia",
+        success: true,
         order: 4,
         cityName: "Uberlandia",
         cityLocation: "Brasil",
@@ -79,8 +80,8 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        placeKey: "Ribeirão Preto",
-        weatherKey: undefined,
+        searchKey: "Ribeirão Preto",
+        success: true,
         order: 5,
         cityName: "Ribeirão Preto",
         cityLocation: "Brasil",
@@ -125,11 +126,11 @@ export default createStore<State>({
         widget.order += 1;
       }
       state.widgets.push({
-        placeKey: payload.cityName,
-        weatherKey: undefined,
+        searchKey: payload.cityName,
+        order: 0,
+        success: true,
         cityName: payload.cityName,
         cityLocation: payload.cityLocation,
-        order: 0,
         weather: undefined,
         settings: {
           showTemperature: false,
@@ -144,7 +145,20 @@ export default createStore<State>({
       if (city == undefined) {
         return;
       }
+      city.success = true;
       city.weather = payload.weather;
+    },
+
+    widgetUpdateWeatherFail(
+      state: State,
+      payload: IMutationWidgetUpdateWeatherFail
+    ) {
+      const city = state.widgets.find((x) => x.cityName == payload.city);
+      if (city == undefined) {
+        return;
+      }
+      city.success = false;
+      city.weather = undefined;
     },
 
     widgetUpdateSettings(state: State, payload: IMutationWidgetUpdateSettings) {
