@@ -1,5 +1,9 @@
 <template>
   <div class="main-layout">
+    <div class="debug">
+      <strong>Debug</strong>
+      <div><input type="checkbox" v-model="debugNetwork" /> Network</div>
+    </div>
     <header>
       <h1>rready weather</h1>
       <nav>
@@ -7,7 +11,7 @@
         <app-icon
           src="icon-settings.svg"
           :clicable="true"
-          @click="activateSettings"
+          @click="toggleConfiguringMode"
         />
       </nav>
     </header>
@@ -21,7 +25,8 @@
 import { defineComponent } from "vue";
 import AppSearch from "@/components/AppSearch.vue";
 import AppIcon from "@/components/base/AppIcon.vue";
-import { IAutocompleteItem } from "./helpers/AutocompleteService";
+import { IAutocompleteItem } from "./services/AutocompleteService";
+import { IMutationWidgetAdd } from "./store/mutations";
 
 export default defineComponent({
   name: "App",
@@ -29,12 +34,30 @@ export default defineComponent({
     AppSearch,
     AppIcon,
   },
+  data: function() {
+    return {
+      debugNetwork: this.$store.state.networkOn,
+    };
+  },
   methods: {
     addWidget(item: IAutocompleteItem) {
-      this.$store.commit("addWidget", item);
+      const payload = this.convert(item);
+      this.$store.commit("widgetAdd", payload);
     },
-    activateSettings() {
-      this.$store.commit("updateSettings");
+    toggleConfiguringMode() {
+      this.$store.commit("toggleConfiguringMode");
+    },
+    convert(item: IAutocompleteItem): IMutationWidgetAdd {
+      return {
+        cityName: item.structured_formatting.main_text,
+        cityLocation:
+          item.terms.length > 1 ? item.terms[item.terms.length - 1].value : "",
+      };
+    },
+  },
+  watch: {
+    debugNetwork(value: boolean, _: any) {
+      this.$store.commit("_debug_updateNetwork", value);
     },
   },
 });
@@ -48,6 +71,25 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   color: $color-text-black
+
+  .debug
+    position: absolute
+    top: 50px
+    left: 30px
+    width: 100px
+    padding: 8px
+    color: transparent
+    text-align: center
+
+    div
+      display: none
+
+    &:hover
+      color: black
+      background-color: #d1cc6d
+
+      > div
+        display: block
 
   .main-layout
     display: flex
@@ -69,6 +111,7 @@ export default defineComponent({
       nav
         display: flex
         justify-content: center
+        gap: $space-small
 
     main
       flex-grow: 1

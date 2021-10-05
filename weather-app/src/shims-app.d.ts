@@ -1,25 +1,15 @@
 import { ComponentCustomProperties } from "vue";
 import { ICityWeather, SDK } from "@rready/weather-sdk";
 import { Store } from "vuex";
+import { IWidget } from "./model/IWidget";
 
 // STORE
 
 declare module "@vue/runtime-core" {
   interface State {
-    settings: boolean,
-    cities: WeatherConfig[];
-  }
-
-  interface WeatherConfig {
-    city: string;
-    subtitle: string;
-    position: number;
-    weather: ICityWeather?;
-    config: {
-      minMaxtemperature: boolean;
-      sunsetSunrise: boolean;
-      windSpeed: boolean;
-    };
+    networkOn: boolean;
+    configuringMode: boolean;
+    widgets: IWidget[];
   }
 
   interface ComponentCustomProperties {

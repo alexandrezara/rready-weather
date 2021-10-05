@@ -36,6 +36,7 @@ export interface ICityWeather {
     sunrise: number;
     sunset: number;
   };
+  timezone: number;
   id: number;
   name: string;
   cod: number;

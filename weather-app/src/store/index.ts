@@ -1,137 +1,198 @@
-import { IAutocompleteItem } from "@/helpers/AutocompleteService";
 import { State } from "vue";
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import {
+  IMutationWidgetAdd,
+  IMutationWidgetReorder,
+  IMutationWidgetUpdateSettings,
+  IMutationWidgetUpdateWeather,
+  IMutationWidgetUpdateWeatherFail,
+} from "./mutations";
 
 export default createStore<State>({
+  plugins: [createPersistedState()],
   state: {
-    settings: false,
-    cities: [
+    networkOn: true,
+    configuringMode: false,
+    widgets: [
       {
-        city: "Rotterdam",
-        subtitle: "Países Baixos",
-        position: 1,
-        weather: null,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        searchKey: "Rotterdam",
+        success: true,
+        order: 1,
+        cityName: "Rotterdam",
+        cityLocation: "Países Baixos",
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
-        city: "Zurich",
-        subtitle: "Suíça",
-        position: 0,
-        weather: null,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        searchKey: "Zurich",
+        success: true,
+        order: 0,
+        cityName: "Zurich",
+        cityLocation: "Suíça",
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
-        city: "Belgrade",
-        subtitle: "Sérvia",
-        position: 2,
-        weather: null,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        searchKey: "Belgrade",
+        success: true,
+        order: 2,
+        cityName: "Belgrade",
+        cityLocation: "Sérvia",
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
-        city: "Skopje",
-        subtitle: "Macedônia",
-        position: 3,
-        weather: null,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        searchKey: "Skopje",
+        success: true,
+        order: 3,
+        cityName: "Skopje",
+        cityLocation: "Macedônia",
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
-        city: "Uberlandia",
-        subtitle: "Brasil",
-        position: 4,
-        weather: null,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        searchKey: "Uberlandia",
+        success: true,
+        order: 4,
+        cityName: "Uberlandia",
+        cityLocation: "Brasil",
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
       {
-        city: "Ribeirão Preto",
-        subtitle: "Brasil",
-        position: 5,
-        weather: null,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+        searchKey: "Ribeirão Preto",
+        success: true,
+        order: 5,
+        cityName: "Ribeirão Preto",
+        cityLocation: "Brasil",
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
+        weather: undefined,
       },
     ],
   },
   mutations: {
-    moveCity(state: State, payload: any) {
+    _debug_updateNetwork(state: State, payload: boolean) {
+      state.networkOn = payload;
+      for (var widget of state.widgets) {
+        widget.success = false;
+        widget.weather = undefined;
+      }
+    },
+    toggleConfiguringMode(state: State) {
+      state.configuringMode = !state.configuringMode;
+    },
+
+    widgetReorder(state: State, payload: IMutationWidgetReorder) {
       if (payload.from == payload.to) {
         return;
       } else if (payload.from < payload.to) {
-        for (var city of state.cities) {
-          if (city.position > payload.from && city.position <= payload.to) {
-            city.position -= 1;
-          } else if (city.position == payload.from) {
-            city.position = payload.to;
+        for (var city of state.widgets) {
+          if (city.order > payload.from && city.order <= payload.to) {
+            city.order -= 1;
+          } else if (city.order == payload.from) {
+            city.order = payload.to;
           }
         }
       } else {
-        for (var city of state.cities) {
-          if (city.position >= payload.to && city.position < payload.from) {
-            city.position += 1;
-          } else if (city.position == payload.from) {
-            city.position = payload.to;
+        for (var city of state.widgets) {
+          if (city.order >= payload.to && city.order < payload.from) {
+            city.order += 1;
+          } else if (city.order == payload.from) {
+            city.order = payload.to;
           }
         }
       }
     },
-    updateWeather(state: State, payload: any) {
-      const city = state.cities.find((x) => x.city == payload.city);
-      if (city == undefined) {
-        return;
+
+    widgetAdd(state: State, payload: IMutationWidgetAdd) {
+      for (let widget of state.widgets) {
+        widget.order += 1;
       }
-      city.weather = payload.weather;
-    },
-    addWidget(state: State, payload: IAutocompleteItem) {
-      state.cities.push({
-        city: payload.structured_formatting.main_text,
-        subtitle:
-          payload.terms.length > 1
-            ? payload.terms[payload.terms.length - 1].value
-            : " ",
-        position: state.cities.length,
-        weather: null,
-        config: {
-          minMaxtemperature: false,
-          sunsetSunrise: false,
-          windSpeed: false,
+      state.widgets.push({
+        searchKey: payload.cityName,
+        order: 0,
+        success: true,
+        cityName: payload.cityName,
+        cityLocation: payload.cityLocation,
+        weather: undefined,
+        settings: {
+          showTemperature: false,
+          showSunrise: false,
+          showWindSpeed: false,
         },
       });
     },
-    updateSettings(state: State) {
-      state.settings = !state.settings;
-    },
-    updateSettingsConfig(state: State, payload: any) {
-      const city = state.cities.find((x) => x.city == payload.city);
+
+    widgetUpdateWeather(state: State, payload: IMutationWidgetUpdateWeather) {
+      const city = state.widgets.find((x) => x.cityName == payload.city);
       if (city == undefined) {
         return;
       }
-      city.config.minMaxtemperature = payload.settings.minMaxtemperature;
-      city.config.sunsetSunrise = payload.settings.sunsetSunrise;
-      city.config.windSpeed = payload.settings.windSpeed;
+      city.success = true;
+      city.weather = payload.weather;
+    },
+
+    widgetUpdateWeatherReload(state: State, cityName: string) {
+      const city = state.widgets.find((x) => x.cityName == cityName);
+      if (city == undefined) {
+        return;
+      }
+      city.success = true;
+      city.weather = undefined;
+    },
+
+    widgetUpdateWeatherFail(
+      state: State,
+      payload: IMutationWidgetUpdateWeatherFail
+    ) {
+      const city = state.widgets.find((x) => x.cityName == payload.city);
+      if (city == undefined) {
+        return;
+      }
+      city.success = false;
+      city.weather = undefined;
+    },
+
+    widgetUpdateSettings(state: State, payload: IMutationWidgetUpdateSettings) {
+      const city = state.widgets.find((x) => x.cityName == payload.city);
+      if (city == undefined) {
+        return;
+      }
+      city.settings.showTemperature = payload.settings.showTemperature;
+      city.settings.showSunrise = payload.settings.showSunrise;
+      city.settings.showWindSpeed = payload.settings.showWindSpeed;
     },
   },
   actions: {},
+  getters: {
+    findWidget: (state) => (city: string) => {
+      return state.widgets.find((x) => x.cityName == city);
+    },
+  },
   modules: {},
 });

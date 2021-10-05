@@ -1,12 +1,13 @@
 <template>
   <div class="app-weather-card-config">
-    <app-checkbox v-model="minMaxtemperature" text="Min/max temperature" />
-    <app-checkbox v-model="sunsetSunrise" text="Sunrise/sunset" />
-    <app-checkbox v-model="windSpeed" text="Wind speed" />
+    <app-checkbox v-model="showTemperature" text="Min/max temperature" />
+    <app-checkbox v-model="showSunrise" text="Sunrise/sunset" />
+    <app-checkbox v-model="showWindSpeed" text="Wind speed" />
   </div>
 </template>
 
 <script lang="ts">
+import { IWidgetSettings } from "@/model/IWidget";
 import { defineComponent, PropType } from "vue";
 import AppCheckbox from "./base/AppCheckbox.vue";
 
@@ -16,32 +17,35 @@ export default defineComponent({
     AppCheckbox,
   },
   props: {
-    settings: Object as PropType<any>,
+    settings: {
+      type: Object as PropType<IWidgetSettings>,
+      required: true,
+    },
   },
   data: function() {
     return {
-      minMaxtemperature: (this.settings as any).minMaxtemperature as boolean,
-      sunsetSunrise: (this.settings as any).sunsetSunrise as boolean,
-      windSpeed: (this.settings as any).windSpeed as boolean,
+      showTemperature: this.settings.showTemperature,
+      showSunrise: this.settings.showSunrise,
+      showWindSpeed: this.settings.showWindSpeed,
     };
   },
   computed: {
     config() {
       return {
-        minMaxtemperature: this.minMaxtemperature,
-        sunsetSunrise: this.sunsetSunrise,
-        windSpeed: this.windSpeed,
+        showTemperature: this.showTemperature,
+        showSunrise: this.showSunrise,
+        showWindSpeed: this.showWindSpeed,
       };
     },
   },
   watch: {
-    minMaxtemperature(value: boolean, _: any) {
+    showTemperature() {
       this.$emit("update-settings", this.config);
     },
-    sunsetSunrise(value: boolean, _: any) {
+    showSunrise() {
       this.$emit("update-settings", this.config);
     },
-    windSpeed(value: boolean, _: any) {
+    showWindSpeed() {
       this.$emit("update-settings", this.config);
     },
   },
@@ -50,8 +54,6 @@ export default defineComponent({
 
 <style scoped lang="sass">
 .app-weather-card-config
-  position: relative
-  flex-grow: 1
   text-align: center
 
   .app-checkbox

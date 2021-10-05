@@ -1,7 +1,7 @@
 <template>
   <div
-    class="app-draggable-card drag-container"
-    :class="{ over: over, active: active }"
+    class="app-draggable drag-container"
+    :class="{ over: over, active: enableDrag }"
     @dragEnter="dragEnter"
     @dragover="dragOver"
     @dragleave="dragLeave"
@@ -9,8 +9,8 @@
   >
     <div
       class="drag-content"
-      :class="{ dragging: dragging, active: active }"
-      :draggable="active"
+      :class="{ dragging: dragging, active: enableDrag }"
+      :draggable="enableDrag"
       @dragstart="dragStart"
       @dragend="dragEnd"
     >
@@ -23,11 +23,11 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "AppDraggableCard",
+  name: "AppDraggable",
   emits: ["drag-and-drop"],
   props: {
-    active: Boolean,
     index: Number,
+    enableDrag: Boolean,
   },
   data: function() {
     return {
@@ -73,7 +73,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="sass">
-.app-draggable-card
+.app-draggable
   padding: 4px
   //background-color: red
 

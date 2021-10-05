@@ -1,13 +1,16 @@
 <template>
   <div class="home">
-    <ul class="city-list">
-      <li v-for="city in cityList">
+    <ul class="widget-list">
+      <li v-for="widget in widgets" :key="widget.cityName">
         <app-draggable-card
-          :index="city.position"
-          :active="editingMode"
-          @drag-and-drop="moveCards"
+          :index="widget.order"
+          :enableDrag="configuringMode"
+          @drag-and-drop="updateWidgetOrder"
         >
-          <app-weather-card :city="city" />
+          <app-weather-card
+            :widget="widget"
+            @request-weather-update="requestUpdate"
+          />
         </app-draggable-card>
       </li>
     </ul>
@@ -16,53 +19,70 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import AppDraggableCard from "@/components/base/AppDraggable.vue";
 import AppWeatherCard from "@/components/AppWeatherCard.vue";
-import AppDraggableCard from "@/components/AppDraggableCard.vue";
+import { ICityWeather } from "@rready/weather-sdk";
+import { Converter } from "@/model/Converters";
+import { IWidget } from "@/model/IWidget";
+import {
+  IMutationWidgetReorder,
+  IMutationWidgetUpdateWeather,
+  IMutationWidgetUpdateWeatherFail,
+} from "@/store/mutations";
 
 export default defineComponent({
   name: "Home",
   components: { AppWeatherCard, AppDraggableCard },
-  created() {
-    this.reloadData();
-  },
   data: function() {
     return {};
   },
   computed: {
-    cityList() {
-      return this.$store.state.cities.sort((a, b) => {
-        return a.position - b.position;
+    widgets() {
+      const copy = [...this.$store.state.widgets];
+      return copy.sort((a: IWidget, b: IWidget) => {
+        return a.order - b.order;
       });
     },
-    editingMode() {
-      return this.$store.state.settings;
+    configuringMode() {
+      return this.$store.state.configuringMode;
     },
   },
   methods: {
-    moveCards(data: any) {
-      this.$store.commit("moveCity", data);
+    updateWidgetOrder(data: IMutationWidgetReorder) {
+      this.$store.commit("widgetReorder", data);
     },
-    reloadData() {
-      this.cityList.forEach((item) => {
-        this.$api
-          .weather(item.city)
-          .then((data) => {
-            this.$store.commit("updateWeather", {
-              city: item.city,
-              weather: data,
-            });
-          })
-          .catch((error) => {
-            alert(error);
-          });
-      });
+    requestUpdate(city: string) {
+      this.$store.commit("widgetUpdateWeatherReload", city);
+      this.$api
+        .weather(city)
+        .then((response) => {
+          if (!this.$store.state.networkOn) {
+            throw "Network off for debugging";
+          }
+          this.successWeather(city, response);
+        })
+        .catch(() => {
+          this.failWeather(city);
+        });
+    },
+    successWeather(city: string, response: ICityWeather) {
+      const weather = Converter.toIWeather(response);
+      this.$store.commit("widgetUpdateWeather", {
+        city: city,
+        weather: weather,
+      } as IMutationWidgetUpdateWeather);
+    },
+    failWeather(city: string) {
+      this.$store.commit("widgetUpdateWeatherFail", {
+        city: city,
+      } as IMutationWidgetUpdateWeatherFail);
     },
   },
 });
 </script>
 
 <style scoped lang="sass">
-ul.city-list
+ul.widget-list
   display: flex
   flex-wrap: wrap
   justify-content: center
