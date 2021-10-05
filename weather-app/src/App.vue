@@ -1,5 +1,9 @@
 <template>
   <div class="main-layout">
+    <div class="debug">
+      <strong>Debug</strong>
+      <div><input type="checkbox" v-model="debugNetwork" /> Network</div>
+    </div>
     <header>
       <h1>rready weather</h1>
       <nav>
@@ -30,6 +34,11 @@ export default defineComponent({
     AppSearch,
     AppIcon,
   },
+  data: function() {
+    return {
+      debugNetwork: this.$store.state.networkOn,
+    };
+  },
   methods: {
     addWidget(item: IAutocompleteItem) {
       const payload = this.convert(item);
@@ -46,6 +55,11 @@ export default defineComponent({
       };
     },
   },
+  watch: {
+    debugNetwork(value: boolean, _: any) {
+      this.$store.commit("_debug_updateNetwork", value);
+    },
+  },
 });
 </script>
 
@@ -57,6 +71,25 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   color: $color-text-black
+
+  .debug
+    position: absolute
+    top: 50px
+    left: 30px
+    width: 100px
+    padding: 8px
+    color: transparent
+    text-align: center
+
+    div
+      display: none
+
+    &:hover
+      color: black
+      background-color: #d1cc6d
+
+      > div
+        display: block
 
   .main-layout
     display: flex

@@ -12,6 +12,7 @@ import {
 export default createStore<State>({
   plugins: [createPersistedState()],
   state: {
+    networkOn: true,
     configuringMode: false,
     widgets: [
       {
@@ -95,6 +96,13 @@ export default createStore<State>({
     ],
   },
   mutations: {
+    _debug_updateNetwork(state: State, payload: boolean) {
+      state.networkOn = payload;
+      for (var widget of state.widgets) {
+        widget.success = false;
+        widget.weather = undefined;
+      }
+    },
     toggleConfiguringMode(state: State) {
       state.configuringMode = !state.configuringMode;
     },
@@ -147,6 +155,15 @@ export default createStore<State>({
       }
       city.success = true;
       city.weather = payload.weather;
+    },
+
+    widgetUpdateWeatherReload(state: State, cityName: string) {
+      const city = state.widgets.find((x) => x.cityName == cityName);
+      if (city == undefined) {
+        return;
+      }
+      city.success = true;
+      city.weather = undefined;
     },
 
     widgetUpdateWeatherFail(

@@ -52,9 +52,13 @@ export default defineComponent({
       this.$store.commit("widgetReorder", data);
     },
     requestUpdate(city: string) {
+      this.$store.commit("widgetUpdateWeatherReload", city);
       this.$api
         .weather(city)
         .then((response) => {
+          if (!this.$store.state.networkOn) {
+            throw "Network off for debugging";
+          }
           this.successWeather(city, response);
         })
         .catch(() => {
