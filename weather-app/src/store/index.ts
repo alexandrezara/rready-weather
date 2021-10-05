@@ -20,7 +20,7 @@ export default createStore<State>({
         success: true,
         order: 1,
         cityName: "Rotterdam",
-        cityLocation: "Países Baixos",
+        cityLocation: "Netherlands",
         settings: {
           showTemperature: false,
           showSunrise: false,
@@ -29,11 +29,11 @@ export default createStore<State>({
         weather: undefined,
       },
       {
-        searchKey: "Zurich",
+        searchKey: "Zürich",
         success: true,
         order: 0,
-        cityName: "Zurich",
-        cityLocation: "Suíça",
+        cityName: "Zürich",
+        cityLocation: "Switzerland",
         settings: {
           showTemperature: false,
           showSunrise: false,
@@ -46,7 +46,7 @@ export default createStore<State>({
         success: true,
         order: 2,
         cityName: "Belgrade",
-        cityLocation: "Sérvia",
+        cityLocation: "Serbia",
         settings: {
           showTemperature: false,
           showSunrise: false,
@@ -59,7 +59,7 @@ export default createStore<State>({
         success: true,
         order: 3,
         cityName: "Skopje",
-        cityLocation: "Macedônia",
+        cityLocation: "Macedonia",
         settings: {
           showTemperature: false,
           showSunrise: false,
@@ -72,7 +72,7 @@ export default createStore<State>({
         success: true,
         order: 4,
         cityName: "Uberlandia",
-        cityLocation: "Brasil",
+        cityLocation: "Brazil",
         settings: {
           showTemperature: false,
           showSunrise: false,
@@ -85,7 +85,7 @@ export default createStore<State>({
         success: true,
         order: 5,
         cityName: "Ribeirão Preto",
-        cityLocation: "Brasil",
+        cityLocation: "Brazil",
         settings: {
           showTemperature: false,
           showSunrise: false,
