@@ -27,7 +27,7 @@
 import {
   AutocompleteService,
   IAutocomplete,
-} from "@/helpers/AutocompleteService";
+} from "@/services/AutocompleteService";
 import AppIcon from "@/components/base/AppIcon.vue";
 import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";

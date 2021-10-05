@@ -1,14 +1,13 @@
 <template>
   <div class="home">
     <ul class="widget-list">
-      <li v-for="widget in widgets">
+      <li v-for="widget in widgets" :key="widget.cityName">
         <app-draggable-card
           :index="widget.order"
           :enableDrag="configuringMode"
           @drag-and-drop="updateWidgetOrder"
         >
           <app-weather-card
-            :key="widget.cityName"
             :widget="widget"
             @request-weather-update="requestUpdate"
           />

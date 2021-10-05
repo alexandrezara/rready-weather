@@ -1,11 +1,10 @@
 {
-  "name": "weather-app",
-  "version": "0.1.0",
+  "name": "@rready/weather-app",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build-prod": "vue-cli-service build --mode production"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@rready/weather-sdk": "file:../weather-sdk",

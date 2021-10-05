@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { SDKClient } from "./SDKClient";
 import { ICityWeather } from "./SDKInterfaces";
 import { SDKOptions } from "./SDKOptions";

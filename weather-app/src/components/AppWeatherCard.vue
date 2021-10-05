@@ -102,6 +102,9 @@ export default defineComponent({
   },
   methods: {
     showingPanel(index: number) {
+      if (!this.haveExtraInfo) {
+        return index == 0;
+      }
       return index == this.panel;
     },
     nextPanel() {

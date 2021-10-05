@@ -21,7 +21,7 @@
 import { defineComponent } from "vue";
 import AppSearch from "@/components/AppSearch.vue";
 import AppIcon from "@/components/base/AppIcon.vue";
-import { IAutocompleteItem } from "./helpers/AutocompleteService";
+import { IAutocompleteItem } from "./services/AutocompleteService";
 import { IMutationWidgetAdd } from "./store/mutations";
 
 export default defineComponent({
