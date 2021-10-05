@@ -78,6 +78,7 @@ export default defineComponent({
       nav
         display: flex
         justify-content: center
+        gap: $space-small
 
     main
       flex-grow: 1

@@ -10,7 +10,7 @@
       v-model="searchString"
       placeholder="Type a city here"
     />
-    <app-icon src="icon-search.svg" />
+    <app-icon class="search-icon" src="icon-search.svg" />
 
     <div class="search-results" v-if="showPredictions">
       <div v-for="item in autocomplete?.predictions">
@@ -104,7 +104,6 @@ $half-size: math.div($size, 2)
   flex-direction: row
   align-items: center
   gap: $space-small
-  margin: 0 $space-small
 
   .search-input
     flex-grow: 1
@@ -127,16 +126,9 @@ $half-size: math.div($size, 2)
       color: lighten(grey, 30%)
       user-select: none
 
-  .search-icon
-    width: $size
-    height: $size
-    padding: 8px
-    border-radius: $half-size
-    background-color: white
-
-    img
-      width: 100%
-      height: 100%
+  @media screen and (max-width: 420px)
+    .search-icon
+      display: none
 
   .search-results
     z-index: 10
