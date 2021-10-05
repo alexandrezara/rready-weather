@@ -20,3 +20,11 @@ Define and implement a Weather Web App in Vue.js
    - This configuration should be persisted (the way you prefer)
 1. The UI should look good if the API's are down
 1. The solution is delivered as a container, ready to be integrated into a deployment pipeline
+
+## How to run
+1. On **weather-sdk**
+   - Install modules ```npm install```
+   - Run ```build``` script
+1. On **weather-app**
+   - Install modules ```npm install```
+   - Run ```serve```  script
