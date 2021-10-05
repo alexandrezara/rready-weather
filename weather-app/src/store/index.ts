@@ -1,7 +1,6 @@
-import { IAutocompleteItem } from "@/services/AutocompleteService";
-import { IWidgetSettings } from "@/model/IWidget";
 import { State } from "vue";
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 import {
   IMutationWidgetAdd,
   IMutationWidgetReorder,
@@ -10,6 +9,7 @@ import {
 } from "./mutations";
 
 export default createStore<State>({
+  plugins: [createPersistedState()],
   state: {
     configuringMode: false,
     widgets: [
