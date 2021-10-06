@@ -29,12 +29,8 @@ import {
   IAutocomplete,
 } from "@/services/AutocompleteService";
 import AppIcon from "@/components/base/AppIcon.vue";
-import { AxiosResponse } from "axios";
 import { defineComponent } from "vue";
-const service = new AutocompleteService(
-  process.env.VUE_APP_PLACES_URL,
-  process.env.VUE_APP_PLACES_KEY
-);
+const service = new AutocompleteService();
 
 export default defineComponent({
   name: "AppSearch",
@@ -75,8 +71,8 @@ export default defineComponent({
     clear() {
       this.searchString = "";
     },
-    autocompleteUpdate(success: AxiosResponse<IAutocomplete>) {
-      this.autocomplete = success.data;
+    autocompleteUpdate(success: IAutocomplete) {
+      this.autocomplete = success;
     },
     autocompleteFail(error: any) {
       console.log(error);

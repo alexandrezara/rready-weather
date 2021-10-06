@@ -1,43 +1,29 @@
-import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
-
 export class AutocompleteService {
-  public url: string;
-  public apiKey: string;
+  private service = new google.maps.places.AutocompleteService();
 
-  constructor(url: string, apiKey: string) {
-    this.url = url;
-    this.apiKey = apiKey;
-  }
+  constructor() {}
 
-  private config(query: string): AxiosRequestConfig {
-    return {
-      method: "get",
-      url: this.url,
-      params: {
-        input: query,
-        types: "(cities)",
-        key: this.apiKey,
-      },
-    };
-  }
-
-  public autocomplete(query: string): AxiosPromise<IAutocomplete> {
-    const config = this.config(query);
-    return axios(config);
+  public autocomplete(query: string): Promise<IAutocomplete> {
+    return new Promise((resolve, reject) => {
+      this.service.getQueryPredictions(
+        { input: query },
+        (
+          predictions: google.maps.places.QueryAutocompletePrediction[] | null,
+          status: google.maps.places.PlacesServiceStatus
+        ) => {
+          if (status != google.maps.places.PlacesServiceStatus.OK) {
+            reject(`Could not access Places API [status=${status}]`);
+          } else if (predictions == null) {
+            reject(`Places API returned null [predictions=null]`);
+          } else {
+            resolve({ predictions: predictions });
+          }
+        }
+      );
+    });
   }
 }
 
 export interface IAutocomplete {
-  predictions: IAutocompleteItem[];
-}
-
-export interface IAutocompleteItem {
-  description: string;
-  place_id: string;
-  structured_formatting: {
-    main_text: string;
-  };
-  terms: {
-    value: string;
-  }[];
+  predictions: google.maps.places.QueryAutocompletePrediction[];
 }
