@@ -85,7 +85,7 @@ export default defineComponent({
     justify-content: flex-start
     gap: $space-small
     line-height: 1
-    margin-top: $space-medium
+    margin-top: $space-small
 
     .key
       display: inline-block

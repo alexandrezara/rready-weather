@@ -25,7 +25,6 @@
 import { defineComponent } from "vue";
 import AppSearch from "@/components/AppSearch.vue";
 import AppIcon from "@/components/base/AppIcon.vue";
-import { IAutocompleteItem } from "./services/AutocompleteService";
 import { IMutationWidgetAdd } from "./store/mutations";
 
 export default defineComponent({
@@ -40,16 +39,18 @@ export default defineComponent({
     };
   },
   methods: {
-    addWidget(item: IAutocompleteItem) {
+    addWidget(item: google.maps.places.QueryAutocompletePrediction) {
       const payload = this.convert(item);
       this.$store.commit("widgetAdd", payload);
     },
     toggleConfiguringMode() {
       this.$store.commit("toggleConfiguringMode");
     },
-    convert(item: IAutocompleteItem): IMutationWidgetAdd {
+    convert(
+      item: google.maps.places.QueryAutocompletePrediction
+    ): IMutationWidgetAdd {
       return {
-        cityName: item.structured_formatting.main_text,
+        cityName: item.terms[0].value,
         cityLocation:
           item.terms.length > 1 ? item.terms[item.terms.length - 1].value : "",
       };
